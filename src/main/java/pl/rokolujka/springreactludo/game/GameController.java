@@ -1,4 +1,4 @@
-package pl.rokolujka.springreactludo;
+package pl.rokolujka.springreactludo.game;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +21,7 @@ public class GameController {
     }
 
     @RequestMapping(method= RequestMethod.POST, value="game")
-    public void createGame(@RequestBody Game game) {
-        gameService.createGame(game);
-
-    }
+    public void createGame(@RequestBody Game game) {gameService.createGame(game);}
 
     @RequestMapping(method=RequestMethod.PUT, value="game")
     public void updateGame(@RequestBody Game game) {
