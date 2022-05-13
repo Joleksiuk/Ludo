@@ -35,3 +35,4 @@ build/
 /src/main/frontend/build/
 /node/
 /package-lock.json
+/src/main/frontend/package-lock.json

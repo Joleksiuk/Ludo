@@ -1,0 +1,24 @@
+import React, {useState, useEffect} from 'react'
+import axios from 'axios'
+import { Game } from '../data-interfaces'
+
+export default function () {
+    const [games, setGames] = useState(new Array<Game>())
+
+    useEffect(() => {
+        axios.get<Game[]>('http://localhost:8080/games')
+        .then(response => {
+            setGames(response.data);
+        })
+        .catch(error => console.log(error))
+    }, []);
+  return (
+    <div>
+        <ul>
+            {
+                games.map(game => <li key={(game.id)}>{game.name}</li>)
+            }
+        </ul>
+    </div>
+  )
+}
