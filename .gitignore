@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/main/frontend/node_modules/
+/src/main/frontend/build/
+/node/
+/package-lock.json
