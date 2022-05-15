@@ -1,4 +1,4 @@
-package pl.rokolujka.springreactludo;
+package pl.rokolujka.springreactludo.game;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

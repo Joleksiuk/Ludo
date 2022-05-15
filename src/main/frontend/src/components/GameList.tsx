@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import { Game } from '../data-interfaces'
 
-export default function () {
+export default function GameList() {
     const [games, setGames] = useState(new Array<Game>())
 
     useEffect(() => {
