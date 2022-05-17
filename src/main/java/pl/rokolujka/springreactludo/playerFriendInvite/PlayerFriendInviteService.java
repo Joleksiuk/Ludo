@@ -2,7 +2,6 @@ package pl.rokolujka.springreactludo.playerFriendInvite;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.rokolujka.springreactludo.playerFriend.PlayerFriend;
 
 import java.util.LinkedList;
 import java.util.List;

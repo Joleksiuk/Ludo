@@ -19,7 +19,7 @@ export default function PlayerGameInviteList() {
                 {
                     playerGameInvites.map(playerGameInvite=>{
                         return(
-                            <div>User {playerGameInvite.invited_user_id} invited {playerGameInvite.invited_user_id} To the game {playerGameInvite.game_id}</div>
+                            <div>User {playerGameInvite.invitedUserId} invited {playerGameInvite.invitedUserId} To the game {playerGameInvite.gameId}</div>
                         )
                     })
                 }

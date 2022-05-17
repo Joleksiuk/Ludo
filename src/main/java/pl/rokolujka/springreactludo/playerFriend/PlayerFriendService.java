@@ -23,4 +23,5 @@ public class PlayerFriendService {
     }
 
     public void deletePlayerFriend(PlayerFriend playerFriend) {playerFriendRepository.delete(playerFriend);}
+
 }

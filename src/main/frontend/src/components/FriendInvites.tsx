@@ -19,7 +19,7 @@ export default function PlayerFriendInviteList() {
                 {
                     playerFriendInvites.map(playerFriendInvite=>{
                         return(
-                            <div>User {playerFriendInvite.invited_user_id}  invited  {playerFriendInvite.invited_user_id} </div>
+                            <div>User {playerFriendInvite.invitedUserId}  invited  {playerFriendInvite.invitedUserId} </div>
                         )
                     })
                 }

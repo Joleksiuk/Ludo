@@ -19,7 +19,7 @@ export default function FriendList() {
             {
             playersFriends.map(playerFriend=>{
                 return(
-                    <div>{playerFriend.first_user_id} Is Friend with {playerFriend.second_user_id} </div>
+                    <div>{playerFriend.firstUserId} Is Friend with {playerFriend.secondUserId} </div>
                 )
             })
             }
