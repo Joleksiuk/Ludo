@@ -24,3 +24,8 @@ export interface PlayerFriendInvite{
     inviting_user_id:number,
     invited_user_id: number,
 }
+
+export interface AuthState{
+    nickname: string,
+    accessToken: string,
+}
