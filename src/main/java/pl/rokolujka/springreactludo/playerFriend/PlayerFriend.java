@@ -18,7 +18,7 @@ import java.io.Serializable;
 public class PlayerFriend implements Serializable {
 
     @Id
-    Integer first_user_id;
+    Integer firstUserId;
     @Id
-    Integer second_user_id;
+    Integer secondUserId;
 }

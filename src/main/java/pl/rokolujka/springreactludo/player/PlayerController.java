@@ -34,4 +34,18 @@ public class PlayerController {
     public void deletePlayer(@PathVariable Integer id) {
         playerService.deletePlayerById(id);
     }
+
+    @RequestMapping(method=RequestMethod.GET, value="player/{id}")
+    public Player findPlayerById(@PathVariable Integer id) {return playerService.findPlayerById(id).orElse(null);}
+
+    @RequestMapping(method=RequestMethod.GET, value="player_friends/{id}")
+    public List<Player> findAllPlayerFriends(@PathVariable Integer id) {
+        return playerService.findAllFriendsOfPlayer(id);
+    }
+
+    @RequestMapping(method=RequestMethod.GET, value="suggest_player_friends/{id}")
+    public List<Player> findAllSuggestedPlayerFriends(@PathVariable Integer id) {
+        return playerService.findAllSuggestedPlayerFriends(id);
+    }
+
 }
