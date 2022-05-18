@@ -18,7 +18,6 @@ public class PlayerGameInvite {
 
     @Id
     Integer inviting_user_id;
-
     @Id
     Integer invited_user_id;
     @Id
