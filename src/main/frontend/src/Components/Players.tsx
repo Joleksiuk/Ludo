@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import axios from 'axios'
+import axios from '../axios'
 import {Player} from '../data-interfaces'
 
 export default function PlayerList() {
     const [players, setplayer] = useState(new Array<Player>())
 
     useEffect(() => {
-        axios.get<Player[]>('http://localhost:8080/players')
+        axios.get<Player[]>('players')
             .then(response => {
                 setplayer(response.data);
             })

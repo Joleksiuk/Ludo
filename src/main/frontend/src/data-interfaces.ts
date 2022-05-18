@@ -1,6 +1,14 @@
 export interface Game {
     id: number,
-    name: string, 
+    name: string,
+    boardId: number
+}
+
+export interface Board {
+    id: number,
+    name: string,
+    maxPlayers: number,
+    numberOfFields: number
 }
 
 export interface Player{
