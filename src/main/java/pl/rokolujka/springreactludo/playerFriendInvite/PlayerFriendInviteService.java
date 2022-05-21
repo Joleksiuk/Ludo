@@ -32,7 +32,7 @@ public class PlayerFriendInviteService {
         playerFriendInviteRepository.delete(playerFriendInvite);
     }
 
-    public void sendFriendRequest(PlayerFriendInvite playerFriendInvite){
+    public void sendFriendInvite(PlayerFriendInvite playerFriendInvite){
 
         createPlayerFriendInvite(playerFriendInvite);
 

@@ -2,7 +2,6 @@ package pl.rokolujka.springreactludo.playerFriendInvite;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.rokolujka.springreactludo.playerFriend.PlayerFriend;
 
 import java.util.List;
 
@@ -33,6 +32,6 @@ public class PlayerFriendInviteController {
 
     @RequestMapping(method=RequestMethod.POST, value = "player_friend_request")
     public void sendPlayerFriendInvite(@RequestBody PlayerFriendInvite playerFriendInvite ){
-        playerFriendInviteService.sendFriendRequest(playerFriendInvite);
+        playerFriendInviteService.sendFriendInvite(playerFriendInvite);
     }
 }
