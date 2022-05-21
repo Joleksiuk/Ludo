@@ -1,4 +1,4 @@
-package pl.rokolujka.springreactludo.rabbitMQComponent;
+package pl.rokolujka.springreactludo.rabbitMQ;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;

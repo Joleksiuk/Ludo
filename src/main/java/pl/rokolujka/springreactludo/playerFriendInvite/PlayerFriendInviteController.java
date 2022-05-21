@@ -30,4 +30,9 @@ public class PlayerFriendInviteController {
     public void deletePlayerFriend(@RequestBody PlayerFriendInvite playerFriendInvite) {
         playerFriendInviteService.deletePlayerFriendInvite(playerFriendInvite);
     }
+
+    @RequestMapping(method=RequestMethod.POST, value = "player_friend_request")
+    public void sendPlayerFriendInvite(@RequestBody PlayerFriendInvite playerFriendInvite ){
+        playerFriendInviteService.sendFriendRequest(playerFriendInvite);
+    }
 }
