@@ -2,6 +2,7 @@ package pl.rokolujka.springreactludo.player;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.rokolujka.springreactludo.playerFriend.PlayerFriend;
 import pl.rokolujka.springreactludo.playerFriend.PlayerFriendRepository;
 import pl.rokolujka.springreactludo.playerFriendInvite.PlayerFriendInvite;
 import pl.rokolujka.springreactludo.playerFriendInvite.PlayerFriendInviteRepository;
@@ -9,6 +10,8 @@ import pl.rokolujka.springreactludo.playerFriendInvite.PlayerFriendInviteReposit
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -41,49 +44,42 @@ public class PlayerService {
     }
 
     public List<Player> findAllFriendsOfPlayer(Integer id){
-        List<Player> friendsOfPlayer = new LinkedList<>();
-        playerFriendRepository.findAll().forEach(playerFriend -> {
+        List<PlayerFriend> friendListOfPlayer = playerFriendRepository.findAllByFirstUserId(id);
+        List<PlayerFriend> friendSecondOfPlayer = playerFriendRepository.findAllBySecondUserId(id);
 
-            if(playerFriend.getFirstUserId().equals(id)){
-                friendsOfPlayer.add(playerRepository.findById(playerFriend.getSecondUserId()).get());
-            }
-            else if(playerFriend.getSecondUserId().equals(id)){
-                friendsOfPlayer.add(playerRepository.findById(playerFriend.getFirstUserId()).get());
-            }
-        });
-        return friendsOfPlayer;
+        List<Integer> firstPlaceIds = friendListOfPlayer.stream().map(PlayerFriend::getSecondUserId).collect(Collectors.toList());
+        List<Integer> secondPlaceIds = friendSecondOfPlayer.stream().map(PlayerFriend::getFirstUserId).collect(Collectors.toList());
+
+        firstPlaceIds.addAll(secondPlaceIds);
+        return firstPlaceIds
+                .stream()
+                .map(playerRepository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
     }
 
     public List<Player> findAllSuggestedPlayerFriends(Integer id){
-        List<Player> friendListOfPlayer =  findAllFriendsOfPlayer(id);
-        List<Player> playersWhoCouldBeInvited = findAllPlayers();
-        List<Player> playersAlreadyInvited = findAllFriendInvitedPlayersOfPlayer(id);
-        playersWhoCouldBeInvited.remove(playerRepository.findById(id).get());
-
-        friendListOfPlayer.forEach(player ->{
-            playersWhoCouldBeInvited.remove(player);
-        });
-        playersAlreadyInvited.forEach(player -> {
-            if(playersWhoCouldBeInvited.contains(player)){
-                playersWhoCouldBeInvited.remove(player);
-            }
-        });
-
-        return playersWhoCouldBeInvited ;
+        List<Player> players = findAllPlayers();
+        players.removeAll(findAllFriendsOfPlayer(id));
+        players.removeAll(findAllFriendInvitedPlayersOfPlayer(id));
+        return players;
     }
 
     public List<Player> findAllFriendInvitedPlayersOfPlayer(Integer id){
-        List<Player> friendInvitesOfPlayer = new LinkedList<>();
-        playerFriendInviteRepository.findAll().forEach(friendInvite->{
+        List<PlayerFriendInvite> firstIdInvites = playerFriendInviteRepository.findAllByInvitingUserId(id);
+        List<PlayerFriendInvite> secondIdInvites = playerFriendInviteRepository.findAllByInvitedUserId(id);
 
-            if(friendInvite.getInvitedUserId().equals(id)){
-                friendInvitesOfPlayer.add(playerRepository.findById(friendInvite.getInvitingUserId()).get());
-            }
-            else if(friendInvite.getInvitingUserId().equals(id)){
-                friendInvitesOfPlayer.add(playerRepository.findById(friendInvite.getInvitedUserId()).get());
-            }
+        List<Integer> firstPlaceIds = firstIdInvites.stream().map(PlayerFriendInvite::getInvitedUserId).collect(Collectors.toList());
+        List<Integer> secondPlaceIds = secondIdInvites.stream().map(PlayerFriendInvite::getInvitingUserId).collect(Collectors.toList());
 
-        });
-        return friendInvitesOfPlayer;
+        firstPlaceIds.addAll(secondPlaceIds);
+
+        return firstPlaceIds
+                .stream()
+                .map(playerRepository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
     }
 }

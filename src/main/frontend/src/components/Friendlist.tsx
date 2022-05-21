@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import axios from 'axios'
+import axios from '../axios'
 import { PlayerFriend } from '../data-interfaces'
 
 export default function FriendList() {
   const [playersFriends, setplayerFriends] = useState(new Array<PlayerFriend>())
 
   useEffect(() => {
-    axios.get<PlayerFriend[]>('http://localhost:8080/player_friends')
+    axios.get<PlayerFriend[]>('player_friends')
         .then(response => {
             setplayerFriends(response.data);
         })
