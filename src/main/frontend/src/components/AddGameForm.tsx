@@ -6,13 +6,13 @@ export default function AddGameForm() {
     const [boards, setBoards] = useState<Board[]>(new Array<Board>())
 
     const [gameName, setGameName] = useState<string>();
-    const [gameBoardId, setGameBoardId] = useState<number>();
+    const [gameBoardCode, setGameBoardCode] = useState<string>();
 
     const renderBoardField = (board: Board) => {
         return (
-            <div key={board.id}>
-                <label htmlFor={board.id.toString()}>{board.name}</label>
-                <input type="radio" id={board.id.toString()} checked={board.id === gameBoardId} onChange={() => setGameBoardId(board.id)}></input>
+            <div key={board.code}>
+                <label htmlFor={board.code}>{board.name}</label>
+                <input type="radio" id={board.code} checked={board.code === gameBoardCode} onChange={() => setGameBoardCode(board.code)}></input>
             </div>
         )
     }
@@ -23,7 +23,7 @@ export default function AddGameForm() {
 
     const handleSubmit = (event: React.FormEvent): void => {
         event.preventDefault();
-        axios.post<Game>('game', { name: gameName, boardId: gameBoardId });
+        axios.post<Game>('game', { name: gameName, boardCode: gameBoardCode });
 
     }
 

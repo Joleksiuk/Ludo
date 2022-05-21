@@ -1,0 +1,24 @@
+.Pawn {
+    border-color: #424242;
+    border-style: solid;
+    width: 50%;
+    height: 50%;
+    margin: auto;
+    border-radius: 50%;
+}
+
+.red {
+    background-color: rgb(190, 0, 0);
+}
+
+.yellow {
+    background-color: rgb(229, 231, 87);
+}
+
+.green {
+    background-color: rgb(67, 167, 42);
+}
+
+.blue {
+    background-color: rgb(62, 123, 255);
+}
