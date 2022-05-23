@@ -2,6 +2,8 @@ package pl.rokolujka.springreactludo.game;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.rokolujka.springreactludo.game.board.BoardField;
+import pl.rokolujka.springreactludo.game.pawn.PawnInfo;
 
 import java.util.List;
 
@@ -31,5 +33,15 @@ public class GameController {
     @RequestMapping(method=RequestMethod.DELETE, value="game/{id}")
     public void deleteGame(@PathVariable Integer id) {
         gameService.deleteGameById(id);
+    }
+
+    @RequestMapping(method=RequestMethod.GET, value="game/{id}/pawns")
+    public List<PawnInfo> getGamePawns(@PathVariable Integer id) {
+        return gameService.findGamePawnsById(id);
+    }
+
+    @RequestMapping(value = "game/{id}/board/fields")
+    public List<List<BoardField>> getGameBoardFields(@PathVariable Integer id) {
+       return gameService.getGameFieldMatrixById(id);
     }
 }

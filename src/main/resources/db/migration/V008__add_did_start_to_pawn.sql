@@ -1,0 +1,5 @@
+BEGIN;
+
+ALTER TABLE IF EXISTS public.pawn ADD COLUMN IF NOT EXISTS did_start boolean NOT NULL default FALSE;
+
+END;

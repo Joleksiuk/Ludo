@@ -17,7 +17,7 @@ public class Game {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
-    String name;
-    Integer boardId;
+    private Integer id;
+    private String name;
+    private String boardCode;
 }
