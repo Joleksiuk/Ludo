@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -28,5 +29,9 @@ public class PlayerService {
 
     public void deletePlayerById(Integer id) {
         playerRepository.deleteById(id);
+    }
+
+    public Optional<Player> findPlayerByNickname(String nickname){
+        return playerRepository.findByNickname(nickname);
     }
 }

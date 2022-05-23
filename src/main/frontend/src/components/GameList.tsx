@@ -7,8 +7,8 @@ export default function GameList() {
 
     useEffect(() => {
         axios.get<Game[]>('games')
-        .then(response => {
-            setGames(response.data);
+        .then(authentication => {
+            setGames(authentication.data);
         })
         .catch(error => console.log(error))
     }, []);

@@ -7,8 +7,8 @@ export default function PlayerList() {
 
     useEffect(() => {
         axios.get<Player[]>('players')
-            .then(response => {
-                setplayer(response.data);
+            .then(authentication => {
+                setplayer(authentication.data);
             })
             .catch(error => console.log(error))
     }, []);
