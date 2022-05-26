@@ -3,6 +3,7 @@ import BoardField from './BoardField';
 import { Field, PawnInfo } from '../../data-interfaces'
 import axios from '../../axios';
 import Pawn from './Pawn';
+import { Box } from '@mui/material';
 
 interface BoardProps {
   gameId: number
@@ -35,13 +36,15 @@ export default function Board(props: BoardProps) {
     axios.get<Array<PawnInfo>>('game/' + props.gameId + '/pawns')
       .then(response => response.data)
       .then(data => setPawns(data));
-  }, [])
+  }, [props.gameId])
 
   return (
-    <table>
-      <tbody>
-        {fieldsMatrix != null ? fieldsMatrix.map(row => <tr>{renderRowContent(row)}</tr>) : <tr><td>loading</td></tr>}
-      </tbody>
-    </table>
+    <Box>
+      <table>
+        <tbody>
+          {fieldsMatrix != null ? fieldsMatrix.map(row => <tr>{renderRowContent(row)}</tr>) : <tr><td>loading</td></tr>}
+        </tbody>
+      </table>
+    </Box>
   )
 }
