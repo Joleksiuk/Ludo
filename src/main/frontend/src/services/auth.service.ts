@@ -3,11 +3,11 @@ import axios from "axios";
 const API_URL = "http://localhost:8080/api/auth/";
 
 class AuthService {
-    login(nickname: string, password_hash: string) {
+    login(nickname: string, password: string) {
     return axios
       .post(API_URL + "signin", {
         nickname,
-        password_hash
+        password
       })
       .then(response => {
         if (response.data.accessToken) {
@@ -19,10 +19,10 @@ class AuthService {
   logout() {
     localStorage.removeItem("player");
   }
-  register(nickname: string, password_hash: string) {
+  register(nickname: string, password: string) {
     return axios.post(API_URL + "signup", {
         nickname,
-        password_hash
+        password
     });
   }
   getCurrentPlayer() {

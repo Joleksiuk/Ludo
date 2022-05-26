@@ -4,16 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.HashSet;
-import java.util.Set;
 
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "player",
-        uniqueConstraints = {
-        @UniqueConstraint(columnNames = "nickname")})
+@Table(name = "player")//,
+//        uniqueConstraints = {
+//        @UniqueConstraint(columnNames = "nickname")})
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -24,10 +22,10 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String nickname;
-    String password_hash;
+    String passwordHash;
 
-    public Player(String nickname, String password_hash) {
+    public Player(String nickname, String passwordHash) {
         this.nickname=nickname;
-        this.password_hash=password_hash;
+        this.passwordHash = passwordHash;
     }
 }
