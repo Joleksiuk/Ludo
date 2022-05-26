@@ -1,36 +1,46 @@
 export interface Game {
     id: number,
     name: string,
-    boardId: number
+    boardCode: string
 }
 
 export interface Board {
-    id: number,
+    code: string,
     name: string,
     maxPlayers: number,
-    numberOfFields: number
 }
 
 export interface Player{
     id: number,
     nickname: string,
-    full_name: string,
+    fullName: string,
 }
 
 export interface PlayerFriend{
-    first_user_id: number,
-    second_user_id: number,
+    firstUserId: number,
+    secondUserId: number,
 }
 
 export interface  PlayerGameInvite{
-    inviting_user_id: number,
-    invited_user_id: number,
-    game_id: number,
+    invitingUserId: number,
+    invitedUserId: number,
+    gameId: number,
 }
 
 export interface PlayerFriendInvite{
-    inviting_user_id:number,
-    invited_user_id: number,
+    invitingUserId:number,
+    invitedUserId: number,
+}
+
+export interface Field {
+    color: string,
+    empty: boolean,
+    id: number
+}
+
+export interface PawnInfo {
+    color: string,
+    fieldId: number,
 }
 
 export interface AuthState{

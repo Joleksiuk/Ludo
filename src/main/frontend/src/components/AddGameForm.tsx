@@ -1,45 +1,63 @@
-import axios from '../axios'
-import React, { useEffect, useState } from 'react'
-import { Board, Game } from '../data-interfaces'
+import axios from "../axios";
+import React, { useEffect, useState } from "react";
+import { Board, Game } from "../data-interfaces";
+import Button from "@mui/material/Button";
+import {
+  TextField,
+  Radio,
+  FormControlLabel,
+  RadioGroup,
+  FormControl,
+  Stack,
+  Typography,
+  FormLabel,
+} from "@mui/material";
 
 export default function AddGameForm() {
-    const [boards, setBoards] = useState<Board[]>(new Array<Board>())
+  const [boards, setBoards] = useState<Board[]>(new Array<Board>());
 
-    const [gameName, setGameName] = useState<string>();
-    const [gameBoardId, setGameBoardId] = useState<number>();
+  const [gameName, setGameName] = useState<string>();
+  const [gameBoardCode, setGameBoardCode] = useState<string>();
 
-    const renderBoardField = (board: Board) => {
-        return (
-            <div key={board.id}>
-                <label htmlFor={board.id.toString()}>{board.name}</label>
-                <input type="radio" id={board.id.toString()} checked={board.id === gameBoardId} onChange={() => setGameBoardId(board.id)}></input>
-            </div>
-        )
-    }
-    useEffect(() => {
-        axios.get<Board[]>('boards')
-            .then(response => setBoards(response.data))
-    }, [])
-
-    const handleSubmit = (event: React.FormEvent): void => {
-        event.preventDefault();
-        axios.post<Game>('game', { name: gameName, boardId: gameBoardId });
-
-    }
-
+  const renderBoardField = (board: Board) => {
     return (
-        <form onSubmit={event => handleSubmit(event)}>
-            <div>
-                <input type="text" placeholder="Game name" id="name" onChange={(e) => setGameName(e.target.value)}></input>
-            </div>
-            <div>
-                {
-                    boards.map(board => renderBoardField(board))
-                }
-            </div>
-            <div>
-                <button type="submit">Add game</button>
-            </div>
-        </form >
-    )
+      <FormControlLabel
+        key={board.code}
+        control={
+          <Radio
+            checked={board.code === gameBoardCode}
+            onChange={() => setGameBoardCode(board.code)}
+          />
+        }
+        label={board.name}
+      />
+    );
+  };
+  useEffect(() => {
+    axios.get<Board[]>("boards").then((response) => setBoards(response.data));
+  }, []);
+
+  const handleSubmit = (event: React.FormEvent): void => {
+    event.preventDefault();
+    axios.post<Game>("game", { name: gameName, boardCode: gameBoardCode });
+  };
+
+  return (
+    <FormControl>
+      <Stack spacing={2}>
+      <Typography variant='h6' component='h2'>Add game</Typography>
+      <TextField
+        type="text"
+        label="Game name"
+        id="name"
+        onChange={(e) => setGameName(e.target.value)}
+      ></TextField>
+      <FormLabel>Board type</FormLabel>
+      <RadioGroup>{boards.map((board) => renderBoardField(board))}</RadioGroup>
+      <Button onClick={event => handleSubmit(event)} variant="contained">
+        Add game
+      </Button>
+      </Stack>
+    </FormControl>
+  );
 }

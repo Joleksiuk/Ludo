@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import pl.rokolujka.springreactludo.player.Player;
 import pl.rokolujka.springreactludo.player.PlayerRepository;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController{
@@ -26,9 +28,8 @@ public class AuthController{
     @Autowired
     JwtUtils jwtUtils;
 
-    //TODO @Valid
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getNickname(), loginRequest.getPassword()));
@@ -44,7 +45,7 @@ public class AuthController{
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerPlayer(@RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<?> registerPlayer(@Valid @RequestBody SignupRequest signUpRequest) {
         if (playerRepository.existsByNickname(signUpRequest.getNickname())) {
             return ResponseEntity
                     .badRequest()
