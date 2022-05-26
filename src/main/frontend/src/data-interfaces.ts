@@ -32,3 +32,15 @@ export interface PlayerFriendInvite{
     invitingUserId:number,
     invitedUserId: number,
 }
+
+
+export class chatMessageDto{
+    
+    user: any;
+    message: any;
+
+    constructor(user:any,message:any){
+        this.user=user;
+        this.message=message;
+    }
+}

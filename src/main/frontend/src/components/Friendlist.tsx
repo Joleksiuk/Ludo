@@ -13,13 +13,13 @@ export default function FriendList() {
         .catch(error => console.log(error))
   }, []);
   return (
-      <div>
+      <div >
         <ul>
             <h3>All Friendships</h3>
             {
             playersFriends.map(playerFriend=>{
                 return(
-                    <div>{playerFriend.firstUserId} Is Friend with {playerFriend.secondUserId} </div>
+                    <div key={playerFriend.firstUserId}>{playerFriend.firstUserId} Is Friend with {playerFriend.secondUserId} </div>
                 )
             })
             }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("players")
 public class PlayerController {
 
     private final PlayerService playerService;
@@ -15,35 +16,35 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    @RequestMapping("players")
+    @GetMapping
     public List<Player> getAllPlayers() {
         return playerService.findAllPlayers();
     }
 
-    @RequestMapping(method= RequestMethod.POST, value="player")
+    @PostMapping
     public void createPlayer(@RequestBody Player player) {
         playerService.createPlayer(player);
     }
 
-    @RequestMapping(method=RequestMethod.PUT, value="player")
+    @PutMapping
     public void updatePlayer(@RequestBody Player player) {
         playerService.updatePlayer(player);
     }
 
-    @RequestMapping(method=RequestMethod.DELETE, value="player/{id}")
+    @DeleteMapping("{id}")
     public void deletePlayer(@PathVariable Integer id) {
         playerService.deletePlayerById(id);
     }
 
-    @RequestMapping(method=RequestMethod.GET, value="player/{id}")
+    @GetMapping("{id}")
     public Player findPlayerById(@PathVariable Integer id) {return playerService.findPlayerById(id).orElse(null);}
 
-    @RequestMapping(method=RequestMethod.GET, value="player_friends/{id}")
+    @GetMapping("friends/{id}")
     public List<Player> findAllPlayerFriends(@PathVariable Integer id) {
         return playerService.findAllFriendsOfPlayer(id);
     }
 
-    @RequestMapping(method=RequestMethod.GET, value="suggest_player_friends/{id}")
+    @GetMapping("suggest_friends/{id}")
     public List<Player> findAllSuggestedPlayerFriends(@PathVariable Integer id) {
         return playerService.findAllSuggestedPlayerFriends(id);
     }
