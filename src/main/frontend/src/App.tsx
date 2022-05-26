@@ -1,24 +1,40 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import './App.css';
-import AddGameForm from './components/AddGameForm';
-import GameList from './components/GameList';
-import FriendList from "./components/Friendlist";
-import PlayerGameInviteList from "./components/GameInvites";
-import PlayerFriendInviteList from "./components/FriendInvites";
-import PlayerList from "./components/Players";
-import Chat from './components/chat/Chat';
+import LudoAppBar from './components/layout/LudoAppBar';
+import { Box, Container} from '@mui/material';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from 'react-router-dom';
+import HomePage from './components/pages/HomePage';
+import LobbyPage from './components/pages/LobbyPage';
+import GamePage from './components/pages/GamePage';
+import LoginPage from './components/pages/LoginPage';
+import MyGamesPage from './components/pages/MyGamesPage';
+import FriendsPage from './components/pages/FriendsPage';
+import RegisterPage from './components/pages/RegisterPage';
+import NotFoundPage from './components/pages/NotFoundPage';
+
 
 function App() {
   return (
-    <div className="App">
-      <Chat></Chat>
-      <AddGameForm></AddGameForm>
-      <PlayerList></PlayerList>
-      <PlayerFriendInviteList></PlayerFriendInviteList>
-      <FriendList></FriendList>
-      <PlayerGameInviteList></PlayerGameInviteList>  
-      <img src = "https://c.tenor.com/B8rKEjDfDjwAAAAd/cat-clown.gif" alt="smieszny kotek"></img>    
-    </div>
+    <BrowserRouter>
+    <LudoAppBar title='Ludo'></LudoAppBar>
+    <Box sx={{height: 100}}></Box>
+    <Container maxWidth='xl'>
+      <Routes>
+        <Route path='/' element ={<HomePage />}/>
+        <Route path='/game' element={<GamePage />}/>
+        <Route path='/login' element={<LoginPage/>}/>
+        <Route path='/my-games' element={<MyGamesPage/>}/>
+        <Route path='/friends' element={<FriendsPage/>}/>
+        <Route path='/register' element={<RegisterPage />}/>
+        <Route path='/lobby' element={<LobbyPage />}/>
+        <Route path="*" element ={<NotFoundPage />} />
+      </Routes>
+    </Container>
+    </BrowserRouter>
   );
 }
 

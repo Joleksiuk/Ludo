@@ -1,0 +1,30 @@
+.BoardField {
+    width: 3vw;
+    height: 3vw;
+    border-radius: 50%;
+}
+
+.bordered {
+    border: solid;
+    border-color: transparent;
+}
+
+.bordered.red {
+    background-color: red;
+}
+
+.bordered.yellow {
+    background-color: yellow;
+}
+
+.bordered.green {
+    background-color: green;
+}
+
+.bordered.blue {
+    background-color: blue;
+}
+
+.bordered.blank {
+    border-color: #bababa;
+}

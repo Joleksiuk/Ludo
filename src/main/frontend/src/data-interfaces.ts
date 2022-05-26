@@ -33,9 +33,19 @@ export interface PlayerFriendInvite{
     invitedUserId: number,
 }
 
+export interface Field {
+    color: string,
+    empty: boolean,
+    id: number
+}
+
+export interface PawnInfo {
+    color: string,
+    fieldId: number,
+}
 
 export class chatMessageDto{
-    
+
     user: any;
     message: any;
 
@@ -44,3 +54,4 @@ export class chatMessageDto{
         this.message=message;
     }
 }
+
