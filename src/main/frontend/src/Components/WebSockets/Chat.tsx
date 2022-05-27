@@ -1,7 +1,7 @@
 import { Container, Divider, FormControl, Grid, IconButton, List, ListItem, ListItemText, Paper, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Fragment, useEffect, useRef, useState } from "react";
-import { ChatMessageDto } from "./ChatMessageDto";
+import { ChatMessageDto} from "./Models/ChatMessageDto";
 import SendIcon from '@mui/icons-material/Send';
 
 export default function Chat(){
@@ -41,6 +41,8 @@ export default function Chat(){
             }
         }
     }, [chatMessages]);
+
+
 
     const handleUserChange = (event) => {
         setUser(event.target.value);

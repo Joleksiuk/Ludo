@@ -12,12 +12,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/friend_invite");
-        config.setApplicationDestinationPrefixes("/app");
+        config.enableSimpleBroker("/aaa");
+        config.setApplicationDestinationPrefixes("/aaaaa");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws-friend_invite").setAllowedOriginPatterns("*");
+        registry.addEndpoint("/ws-qqqqqqqqq").setAllowedOriginPatterns("*");
     }
 }

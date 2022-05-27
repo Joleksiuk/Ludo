@@ -43,19 +43,6 @@ export interface PawnInfo {
     fieldId: number,
 }
 
-export class chatMessageDto{
-
-    user: any;
-    message: any;
-
-    constructor(user:any,message:any){
-        this.user=user;
-        this.message=message;
-    }
-}
-
-
-
 export interface AuthState{
     nickname: string,
     accessToken: string,

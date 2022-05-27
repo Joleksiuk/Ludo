@@ -16,18 +16,18 @@ public class WebSocketTextController {
     @Autowired
     SimpMessagingTemplate template;
 
-    @PostMapping("/send_friend_invite")
+    @PostMapping("/qqqqqqqqqqqqqqqqqqq")
     public ResponseEntity<Void> sendInvite(@RequestBody InviteDto frindInvitedDto) {
-        template.convertAndSend("/friend_invite_dupa", frindInvitedDto);
+        template.convertAndSend("/qqqqq", frindInvitedDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/receive_friend_invite")
+    @PostMapping("/qqqqqqqqqqqqq")
     public void receiveInvite(@Payload  InviteDto textMessageDTO) {
         // receive message from client
     }
 
-    @SendTo("/topic/friend_invite")
+    @SendTo("/qqqqqqq")
     public  InviteDto broadcastInvite(@Payload  InviteDto textMessageDTO) {
         return textMessageDTO;
     }

@@ -16,8 +16,8 @@ public class RabbitConsumer {
 
     @RabbitListener(queues = RabbitConfig.QUEUE)
     public void consumeMessageFromQueue(FriendInviteNotification friendInviteNotification){
-        ///System.out.println(friendInviteNotification.getMessage());
-        simpMessagingTemplate.convertAndSend("/chat", friendInviteNotification);
+        System.out.println(friendInviteNotification.getMessage());
+        simpMessagingTemplate.convertAndSend("/player_friend_request", friendInviteNotification);
     }
 
     @RabbitListener(queues = RabbitConfig.QUEUE)
