@@ -10,7 +10,6 @@ import pl.rokolujka.springreactludo.playerFriendInvite.PlayerFriendInviteReposit
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -81,5 +80,9 @@ public class PlayerService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
+    }
+
+    public Optional<Player> findPlayerByNickname(String nickname){
+        return playerRepository.findByNickname(nickname);
     }
 }

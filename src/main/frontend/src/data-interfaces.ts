@@ -1,14 +1,13 @@
 export interface Game {
     id: number,
     name: string,
-    boardId: number
+    boardCode: string
 }
 
 export interface Board {
-    id: number,
+    code: string,
     name: string,
     maxPlayers: number,
-    numberOfFields: number
 }
 
 export interface Player{
@@ -55,3 +54,9 @@ export class chatMessageDto{
     }
 }
 
+
+
+export interface AuthState{
+    nickname: string,
+    accessToken: string,
+}
