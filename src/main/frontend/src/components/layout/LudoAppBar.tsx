@@ -13,10 +13,11 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import MenuIcon from "@mui/icons-material/Menu";
-import PersonIcon from '@mui/icons-material/Person';
+import PersonIcon from "@mui/icons-material/Person";
 import CasinoIcon from "@mui/icons-material/Casino";
 import HomeIcon from "@mui/icons-material/Home";
-import React from "react";
+import React, { useEffect } from "react";
+import authService from "../../services/auth.service";
 
 interface AppBarProps {
   title: string;
@@ -24,6 +25,15 @@ interface AppBarProps {
 
 export default function LudoAppBar(props: AppBarProps) {
   const [open, setOpen] = React.useState(false);
+  const [shouldLogout, setShouldLogout] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    if (shouldLogout) {
+      authService.logout();
+      setShouldLogout(false);
+    }
+  }, [shouldLogout]);
+
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
@@ -53,9 +63,15 @@ export default function LudoAppBar(props: AppBarProps) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {props.title}
           </Typography>
-          <Button color="inherit" href="/login">
-            Login
-          </Button>
+          {authService.getCurrentPlayer() === null ? (
+            <Button color="inherit" href="/login">
+              Login
+            </Button>
+          ) : (
+            <Button color="inherit" onClick={() => setShouldLogout(true)}>
+              Logout
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
@@ -72,7 +88,7 @@ export default function LudoAppBar(props: AppBarProps) {
             <ListItem>
               <ListItemButton href="/game">
                 <ListItemIcon>
-                  <CasinoIcon/>
+                  <CasinoIcon />
                 </ListItemIcon>
                 <ListItemText>Game</ListItemText>
               </ListItemButton>
@@ -80,7 +96,7 @@ export default function LudoAppBar(props: AppBarProps) {
             <ListItem>
               <ListItemButton href="/my-games">
                 <ListItemIcon>
-                  <CasinoIcon/>
+                  <CasinoIcon />
                 </ListItemIcon>
                 <ListItemText>My games</ListItemText>
               </ListItemButton>

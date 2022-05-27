@@ -42,3 +42,8 @@ export interface PawnInfo {
     color: string,
     fieldId: number,
 }
+
+export interface AuthState{
+    nickname: string,
+    accessToken: string,
+}
