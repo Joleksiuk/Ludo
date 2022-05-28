@@ -2,9 +2,8 @@ package pl.rokolujka.springreactludo.playerFriendInvite;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.rokolujka.springreactludo.rabbitMQ.FriendInviteNotification;
+import pl.rokolujka.springreactludo.rabbitMQ.FriendInviteDto;
 import pl.rokolujka.springreactludo.rabbitMQ.RabbitConfig;
 
 import java.util.LinkedList;
@@ -37,9 +36,9 @@ public class PlayerFriendInviteService {
 
         //send friend invite notification to rabbitMQ queue
         String message = "Player ["+playerFriendInvite.getInvitingUserId()+"] sent friend request to player ["+ playerFriendInvite.getInvitedUserId() +"]";
-        FriendInviteNotification friendInviteNotification = new FriendInviteNotification(playerFriendInvite,message);
+        FriendInviteDto friendInviteDto = new FriendInviteDto(playerFriendInvite,message);
 
-        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE,RabbitConfig.ROUTING_KEY, friendInviteNotification);
+        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE,RabbitConfig.ROUTING_KEY, friendInviteDto);
     }
 
 }

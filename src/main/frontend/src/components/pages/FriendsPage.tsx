@@ -1,6 +1,7 @@
 import React from "react";
+import FriendList from "../Friendlist";
 import PlayerFriendInviteList from "../PlayerFriendInviteList";
-import FriendList from "../FriendList";
+
 import PlayerList from "../PlayersList";
 
 export default function FriendsPage() {

@@ -1,4 +1,4 @@
-package pl.rokolujka.springreactludo.websockets;
+package pl.rokolujka.springreactludo.webSockets;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -8,16 +8,16 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
-public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+public class WebSocketMBConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/aaa");
-        config.setApplicationDestinationPrefixes("/aaaaa");
+        config.enableSimpleBroker("/friend_request");
+        config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws-qqqqqqqqq").setAllowedOriginPatterns("*");
+        registry.addEndpoint("/friend_request").setAllowedOriginPatterns("*");
     }
 }

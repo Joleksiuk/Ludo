@@ -1,10 +1,12 @@
-import { PlayerFriendInvite } from "../../data-interfaces";
+import { PlayerFriendInvite } from "../../../data-interfaces";
+
+
 
 export class FriendInviteDto {
     playerFriendInvite: PlayerFriendInvite;
     message: String;
 
-    constructor(playerFriendInvite, message){
+    constructor(playerFriendInvite: PlayerFriendInvite, message: String){
         this.playerFriendInvite = playerFriendInvite;
         this.message = message;
     }

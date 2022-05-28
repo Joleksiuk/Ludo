@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.rokolujka.springreactludo.playerFriendInvite.PlayerFriendInvite;
-import pl.rokolujka.springreactludo.rabbitMQ.FriendInviteNotification;
-import pl.rokolujka.springreactludo.rabbitMQ.GameInviteNotification;
+import pl.rokolujka.springreactludo.rabbitMQ.GameInviteDto;
 import pl.rokolujka.springreactludo.rabbitMQ.RabbitConfig;
 
 import java.util.LinkedList;
@@ -40,9 +38,9 @@ public class PlayerGameInviteService {
         createPlayerGameInvite(playerGameInvite);
 
         String message = "Player ["+playerGameInvite.getInvitingUserId()+"] sent game invite to player ["+ playerGameInvite.getInvitedUserId() +"]";
-        GameInviteNotification gameInviteNotification = new GameInviteNotification(playerGameInvite,message);
+        GameInviteDto gameInviteDto = new GameInviteDto(playerGameInvite,message);
 
-        template.convertAndSend(RabbitConfig.EXCHANGE,RabbitConfig.ROUTING_KEY, gameInviteNotification);
+        template.convertAndSend(RabbitConfig.EXCHANGE,RabbitConfig.ROUTING_KEY, gameInviteDto);
 
     }
 }

@@ -1,5 +1,4 @@
-package pl.rokolujka.springreactludo.websockets2;
-
+package pl.rokolujka.springreactludo.webSockets;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,11 +11,9 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class WebSocketConfiguration implements WebSocketConfigurer {
 
-    private final static String CHAT_ENDPOINT = "/chat";
-
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
-        webSocketHandlerRegistry.addHandler(getChatWebSocketHandler(), CHAT_ENDPOINT)
+        webSocketHandlerRegistry.addHandler(getChatWebSocketHandler(), "/friend_request")
                 .setAllowedOrigins("*");
     }
 

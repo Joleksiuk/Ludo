@@ -13,16 +13,15 @@ public class RabbitConsumer {
     public RabbitConsumer(SimpMessagingTemplate simpMessagingTemplate) {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
-
     @RabbitListener(queues = RabbitConfig.QUEUE)
-    public void consumeMessageFromQueue(FriendInviteNotification friendInviteNotification){
-        System.out.println(friendInviteNotification.getMessage());
-        simpMessagingTemplate.convertAndSend("/player_friend_request", friendInviteNotification);
+    public void consumeFriendRequestFromQueue(FriendInviteDto friendInviteDto){
+        System.out.println(friendInviteDto.getMessage());
+        simpMessagingTemplate.convertAndSend("/friend_request", friendInviteDto);
     }
 
     @RabbitListener(queues = RabbitConfig.QUEUE)
-    public void consumeMessageFromQueue(GameInviteNotification gameInviteNotification){
-        System.out.println(gameInviteNotification.getMessage());
+    public void consumeMessageFromQueue(GameInviteDto gameInviteDto){
+        System.out.println(gameInviteDto.getMessage());
     }
 
 }

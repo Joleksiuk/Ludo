@@ -1,4 +1,4 @@
-package pl.rokolujka.springreactludo.websockets2;
+package pl.rokolujka.springreactludo.webSockets;
 
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;

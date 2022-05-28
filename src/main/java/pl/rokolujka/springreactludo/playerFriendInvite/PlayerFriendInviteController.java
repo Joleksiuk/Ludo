@@ -2,7 +2,6 @@ package pl.rokolujka.springreactludo.playerFriendInvite;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.rokolujka.springreactludo.rabbitMQ.FriendInviteNotification;
 
 import java.util.List;
 

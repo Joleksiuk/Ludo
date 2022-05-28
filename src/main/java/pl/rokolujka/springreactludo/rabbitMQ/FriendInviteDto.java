@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import pl.rokolujka.springreactludo.playerGameInvite.PlayerGameInvite;
+import pl.rokolujka.springreactludo.playerFriendInvite.PlayerFriendInvite;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class GameInviteNotification {
-    private PlayerGameInvite playerGameInvite;
+public class FriendInviteDto {
+    private PlayerFriendInvite playerFriendInvite;
     private String message;
 }
