@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("player_friends")
 public class PlayerFriendController {
 
     private final PlayerFriendService playerFriendService;
@@ -15,17 +16,17 @@ public class PlayerFriendController {
         this.playerFriendService = playerFriendService;
     }
 
-    @RequestMapping("player_friends")
+    @GetMapping
     public List<PlayerFriend> getAllFriendships() {
         return playerFriendService.findAllPlayerFriends();
     }
 
-    @RequestMapping(method= RequestMethod.POST, value="player_friend")
+    @PostMapping
     public void createPlayerFriend(@RequestBody PlayerFriend playerFriend) {
         playerFriendService.createPlayerFriend(playerFriend);
     }
 
-    @RequestMapping(method=RequestMethod.DELETE, value="player_friend")
+    @DeleteMapping
     public void deletePlayerFriend(@RequestBody PlayerFriend playerFriend) {
         playerFriendService.deletePlayerFriend(playerFriend);
     }

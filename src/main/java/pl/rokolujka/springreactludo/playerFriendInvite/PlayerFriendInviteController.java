@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("player_friend_invites")
 public class PlayerFriendInviteController {
 
     private final PlayerFriendInviteService playerFriendInviteService;
@@ -15,23 +16,39 @@ public class PlayerFriendInviteController {
         this.playerFriendInviteService = playerFriendInviteService;
     }
 
-    @RequestMapping("player_friend_invites")
+    @GetMapping
     public List<PlayerFriendInvite> getAllPlayerFriendInvites() {
         return playerFriendInviteService.findAllPlayerFriendInvites();
     }
 
-    @RequestMapping(method= RequestMethod.POST, value="player_friend_invite")
+    @PostMapping
     public void createPlayerFriendInvite(@RequestBody PlayerFriendInvite playerFriendInvite) {
         playerFriendInviteService.createPlayerFriendInvite(playerFriendInvite);
     }
 
-    @RequestMapping(method=RequestMethod.DELETE, value="player_friend_invite")
-    public void deletePlayerFriend(@RequestBody PlayerFriendInvite playerFriendInvite) {
+    @DeleteMapping
+    public void deletePlayerFriendInvite(@RequestBody PlayerFriendInvite playerFriendInvite) {
         playerFriendInviteService.deletePlayerFriendInvite(playerFriendInvite);
     }
 
-    @RequestMapping(method=RequestMethod.POST, value = "player_friend_request")
+    @PostMapping("send")
     public void sendPlayerFriendInvite(@RequestBody PlayerFriendInvite playerFriendInvite ){
-        playerFriendInviteService.sendFriendInvite(playerFriendInvite);
+        playerFriendInviteService.sendFriendInviteViaRabbitMQ(playerFriendInvite);
     }
+
+    @DeleteMapping("accept")
+    public void acceptPlayerFriendInvite(@RequestBody PlayerFriendInvite playerFriendInvite) {
+        playerFriendInviteService.acceptFriendInvite(playerFriendInvite);
+    }
+
+    @DeleteMapping("decline")
+    public void declinePlayerFriendInvite(@RequestBody PlayerFriendInvite playerFriendInvite) {
+        playerFriendInviteService.declineFriendInvite(playerFriendInvite);
+    }
+
+
+
+
+
+
 }
