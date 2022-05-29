@@ -20,7 +20,7 @@ export default function FriendList() {
     <List subheader={<ListSubheader>Friend list</ListSubheader>}>
       {playersFriends.map((playerFriend) => {
         return (
-          <ListItem>
+          <ListItem key={playerFriend.firstUserId.toString()+playerFriend.secondUserId.toString()}>
             <ListItemAvatar></ListItemAvatar>
             <ListItemText>
               {playerFriend.firstUserId} Is Friend with{" "}

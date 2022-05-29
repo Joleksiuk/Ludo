@@ -36,12 +36,12 @@ public class PlayerFriendInviteController {
         playerFriendInviteService.sendFriendInviteViaRabbitMQ(playerFriendInvite);
     }
 
-    @DeleteMapping("accept")
+    @PutMapping("accept")
     public void acceptPlayerFriendInvite(@RequestBody PlayerFriendInvite playerFriendInvite) {
         playerFriendInviteService.acceptFriendInvite(playerFriendInvite);
     }
 
-    @DeleteMapping("decline")
+    @PutMapping("decline")
     public void declinePlayerFriendInvite(@RequestBody PlayerFriendInvite playerFriendInvite) {
         playerFriendInviteService.declineFriendInvite(playerFriendInvite);
     }

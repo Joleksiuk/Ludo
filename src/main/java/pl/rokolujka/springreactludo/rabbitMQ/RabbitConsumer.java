@@ -9,7 +9,6 @@ import pl.rokolujka.springreactludo.playerFriendInvite.PlayerFriendInviteService
 public class RabbitConsumer {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
-
     private final PlayerFriendInviteService playerFriendInviteService;
 
     @Autowired
