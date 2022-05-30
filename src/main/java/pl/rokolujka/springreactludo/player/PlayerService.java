@@ -1,6 +1,7 @@
 package pl.rokolujka.springreactludo.player;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 import pl.rokolujka.springreactludo.playerFriend.PlayerFriend;
 import pl.rokolujka.springreactludo.playerFriend.PlayerFriendRepository;
@@ -62,6 +63,8 @@ public class PlayerService {
         List<Player> players = findAllPlayers();
         players.removeAll(findAllFriendsOfPlayer(id));
         players.removeAll(findAllFriendInvitedPlayersOfPlayer(id));
+        players.remove(findPlayerById(id).orElseThrow());
+
         return players;
     }
 

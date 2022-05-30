@@ -1,12 +1,10 @@
 import React from 'react'
-import Chat from '../WebSockets/Chat'
-import FriendInviteNotification from '../WebSockets/FriendInviteNotif'
+import FriendInviteNotification from '../FriendInviteNotif'
 
 export default function LobbyPage() {
   return (
     <div> 
       LobbyPage
-      <FriendInviteNotification></FriendInviteNotification>
     </div>
     
   )

@@ -18,8 +18,6 @@ export default function PlayerFriendInviteList() {
     new Array<PlayerFriendInvite>()
   );
 
-
-
   useEffect(() => {
     axios
       .get<PlayerFriendInvite[]>("player_friend_invites")
@@ -27,7 +25,8 @@ export default function PlayerFriendInviteList() {
         setplayerFriendInvites(response.data);
       })
       .catch((error) => console.log(error));
-  },);
+  },[]);
+  
 
   const handleAccept=(event, playerFriendInvite)=>{
     axios.put("player_friend_invites/accept",playerFriendInvite)
@@ -39,6 +38,7 @@ export default function PlayerFriendInviteList() {
     axios.put("player_friend_invites/decline",playerFriendInvite)
     .catch((error) => console.log(error));
   }
+  
 
   return (
     <div>
