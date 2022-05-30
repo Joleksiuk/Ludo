@@ -31,11 +31,6 @@ public class PlayerFriendInviteController {
         playerFriendInviteService.deletePlayerFriendInvite(playerFriendInvite);
     }
 
-    @PostMapping("send")
-    public void sendPlayerFriendInvite(@RequestBody PlayerFriendInvite playerFriendInvite ){
-        playerFriendInviteService.sendFriendInviteViaRabbitMQ(playerFriendInvite);
-    }
-
     @PutMapping("accept")
     public void acceptPlayerFriendInvite(@RequestBody PlayerFriendInvite playerFriendInvite) {
         playerFriendInviteService.acceptFriendInvite(playerFriendInvite);
