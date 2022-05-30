@@ -5,7 +5,6 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import pl.rokolujka.springreactludo.playerFriend.PlayerFriend;
 import pl.rokolujka.springreactludo.playerFriend.PlayerFriendRepository;
-import pl.rokolujka.springreactludo.rabbitMQ.FriendInviteDto;
 import pl.rokolujka.springreactludo.rabbitMQ.RabbitConfig;
 
 import java.util.LinkedList;
@@ -31,15 +30,6 @@ public class PlayerFriendInviteService {
     }
     public void deletePlayerFriendInvite(PlayerFriendInvite playerFriendInvite) {
         playerFriendInviteRepository.delete(playerFriendInvite);
-    }
-
-    public void sendFriendInviteViaRabbitMQ(PlayerFriendInvite playerFriendInvite){
-
-        //send friend invite notification to rabbitMQ queue
-        String message = "Player ["+playerFriendInvite.getInvitingUserId()+"] sent friend request to player ["+ playerFriendInvite.getInvitedUserId() +"]";
-        FriendInviteDto friendInviteDto = new FriendInviteDto(playerFriendInvite,message);
-
-        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE,RabbitConfig.ROUTING_KEY, friendInviteDto);
     }
 
     public void acceptFriendInvite(PlayerFriendInvite playerFriendInvite){

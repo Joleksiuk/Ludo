@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.rokolujka.springreactludo.rabbitMQ.GameInviteDto;
-import pl.rokolujka.springreactludo.rabbitMQ.RabbitConfig;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,16 +29,5 @@ public class PlayerGameInviteService {
 
     public void deletePlayerGameInvite(PlayerGameInvite playerGameInvite) {
         playerGameInviteRepository.delete(playerGameInvite);
-    }
-
-    public void sendGameInvite(PlayerGameInvite playerGameInvite){
-
-        createPlayerGameInvite(playerGameInvite);
-
-        String message = "Player ["+playerGameInvite.getInvitingUserId()+"] sent game invite to player ["+ playerGameInvite.getInvitedUserId() +"]";
-        GameInviteDto gameInviteDto = new GameInviteDto(playerGameInvite,message);
-
-        template.convertAndSend(RabbitConfig.EXCHANGE,RabbitConfig.ROUTING_KEY, gameInviteDto);
-
     }
 }

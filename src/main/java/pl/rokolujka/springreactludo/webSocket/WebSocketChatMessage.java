@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class WebSocketChatMessage {
-    //private PlayerFriendInvite playerFriendInvite;
     String message;
 }
 

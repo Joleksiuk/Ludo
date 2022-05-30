@@ -32,9 +32,4 @@ public class PlayerGameInviteController {
         playerGameInviteService.deletePlayerGameInvite(playerGameInvite);
     }
 
-    @PostMapping("send")
-    public void sendPlayerGameInvite(@RequestBody PlayerGameInvite playerGameInvite ){
-        playerGameInviteService.sendGameInvite(playerGameInvite);
-    }
-
 }

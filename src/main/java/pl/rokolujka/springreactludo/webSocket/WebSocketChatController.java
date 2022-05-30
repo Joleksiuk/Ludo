@@ -13,11 +13,4 @@ public class WebSocketChatController {
     public WebSocketChatMessage sendMessage(@Payload WebSocketChatMessage webSocketChatMessage) {
         return webSocketChatMessage;
     }
-//    @MessageMapping("/chat.newUser")
-//    @SendTo("/topic/javainuse")
-//    public WebSocketChatMessage newUser(@Payload WebSocketChatMessage webSocketChatMessage,
-//                                        SimpMessageHeaderAccessor headerAccessor) {
-//        //headerAccessor.getSessionAttributes().put("Plater friend", webSocketChatMessage.getPlayerFriendInvite());
-//        return webSocketChatMessage;
-//    }
 }
