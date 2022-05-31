@@ -1,6 +1,7 @@
 import React from "react";
+import FriendablePlayersList from "../FriendablePlayerList";
 import PlayerFriendInviteList from "../PlayerFriendInviteList";
-import FriendList from "../FriendList";
+
 import PlayerList from "../PlayersList";
 
 export default function FriendsPage() {
@@ -8,7 +9,7 @@ export default function FriendsPage() {
     <>
       <PlayerList></PlayerList>
       <PlayerFriendInviteList></PlayerFriendInviteList>
-      <FriendList></FriendList>
+      <FriendablePlayersList></FriendablePlayersList>
     </>
   );
 }

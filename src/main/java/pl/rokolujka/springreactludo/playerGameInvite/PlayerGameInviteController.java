@@ -7,6 +7,7 @@ import pl.rokolujka.springreactludo.playerFriendInvite.PlayerFriendInvite;
 import java.util.List;
 
 @RestController
+@RequestMapping("player_game_invites")
 public class PlayerGameInviteController {
 
     private final PlayerGameInviteService playerGameInviteService;
@@ -16,24 +17,19 @@ public class PlayerGameInviteController {
         this.playerGameInviteService = playerGameInviteService;
     }
 
-    @RequestMapping("player_game_invites")
+    @GetMapping
     public List<PlayerGameInvite> getAllPlayerGameInvites() {
         return playerGameInviteService.findAllPlayerGameInvites();
     }
 
-    @RequestMapping(method= RequestMethod.POST, value="player_game_invite")
+    @PostMapping
     public void createPlayerGameInvite(@RequestBody PlayerGameInvite playerGameInvite) {
         playerGameInviteService.createPlayerGameInvite(playerGameInvite);
     }
 
-    @RequestMapping(method=RequestMethod.DELETE, value="player_game_invite")
+    @DeleteMapping
     public void deletePlayerFriend(@RequestBody PlayerGameInvite playerGameInvite) {
         playerGameInviteService.deletePlayerGameInvite(playerGameInvite);
-    }
-
-    @RequestMapping(method=RequestMethod.POST, value = "send_game_invite")
-    public void sendPlayerGameInvite(@RequestBody PlayerGameInvite playerGameInvite ){
-        playerGameInviteService.sendGameInvite(playerGameInvite);
     }
 
 }

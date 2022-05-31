@@ -18,7 +18,7 @@ export default function Board(props: BoardProps) {
   const renderPawnForField = (field: Field) => {
     const pawn = pawns?.find(pawn => pawn.fieldId === field.id);
     return (
-      pawn === undefined ? <></> : <Pawn color={pawn.color}></Pawn>
+      pawn === undefined ? <></> : <Pawn key={field.id} color={pawn.color}></Pawn>
     )
   }
 
@@ -42,7 +42,7 @@ export default function Board(props: BoardProps) {
     <Box>
       <table>
         <tbody>
-          {fieldsMatrix != null ? fieldsMatrix.map(row => <tr>{renderRowContent(row)}</tr>) : <tr><td>loading</td></tr>}
+          {fieldsMatrix != null ? fieldsMatrix.map(row => <tr key = {fieldsMatrix.indexOf(row)}>{renderRowContent(row)}</tr>) : <tr><td>loading</td></tr>}
         </tbody>
       </table>
     </Box>
