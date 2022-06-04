@@ -9,9 +9,9 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "player")//,
-//        uniqueConstraints = {
-//        @UniqueConstraint(columnNames = "nickname")})
+@Table(name = "player",
+        uniqueConstraints = {
+        @UniqueConstraint(columnNames = "nickname")})
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

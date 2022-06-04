@@ -73,7 +73,7 @@ public class GameService {
         return IntStream.range(0, PAWNS_PER_COLOUR)
                 .mapToObj(number -> Pawn.builder()
                         .number(number)
-                        .userId(gamePlayer.getUserId())
+                        .playerId(gamePlayer.getPlayerId())
                         .gameId(gamePlayer.getGameId())
                         .progress(0)
                         .fieldId(boardService.getStartingFieldIdForPawn(number, board, color))
@@ -118,7 +118,7 @@ public class GameService {
     private ColorEnum getPawnColor(Pawn pawn) {
         GamePlayerId gamePlayerId = GamePlayerId.builder()
                 .gameId(pawn.getGameId())
-                .userId(pawn.getUserId())
+                .playerId(pawn.getPlayerId())
                 .build();
         return gamePlayerRepository.findById(gamePlayerId)
                 .map(GamePlayer::getPlayerColour)

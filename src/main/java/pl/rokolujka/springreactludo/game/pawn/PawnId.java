@@ -11,6 +11,6 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class PawnId implements Serializable {
     Integer number;
-    Integer userId;
+    Integer playerId;
     Integer gameId;
 }

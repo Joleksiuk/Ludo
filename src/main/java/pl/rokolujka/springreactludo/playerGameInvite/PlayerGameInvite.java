@@ -17,9 +17,9 @@ import javax.persistence.*;
 public class PlayerGameInvite {
 
     @Id
-    Integer invitingUserId;
+    Integer invitingPlayerId;
     @Id
-    Integer invitedUserId;
+    Integer invitedPlayerId;
     @Id
     Integer gameId;
 

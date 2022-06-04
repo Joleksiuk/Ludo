@@ -30,5 +30,8 @@ class AuthService {
     if (playerStr) return JSON.parse(playerStr);
     return null;
   }
+  isPlayerLoggedIn() {
+    return this.getCurrentPlayer() !== null;
+  }
 }
 export default new AuthService();
