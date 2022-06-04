@@ -7,6 +7,6 @@ import java.util.List;
 
 
 public interface PlayerFriendInviteRepository extends CrudRepository<PlayerFriendInvite, PlayerFriendInviteId>{
-    List<PlayerFriendInvite> findAllByInvitingUserId(Integer id);
-    List<PlayerFriendInvite> findAllByInvitedUserId(Integer id);
+    List<PlayerFriendInvite> findAllByInvitingPlayerId(Integer id);
+    List<PlayerFriendInvite> findAllByInvitedPlayerId(Integer id);
 }

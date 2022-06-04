@@ -6,17 +6,17 @@ import {
   ListSubheader,
   Box,
 } from "@mui/material";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect} from "react";
+import { useStompClient } from "react-stomp-hooks";
 import axios from "../axios";
 import { Player } from "../data-interfaces";
 import authService from "../services/auth.service";
-import { WebSocketContext } from "./WebSocketProvider";
 
 export default function FriendablePlayersList() {
   const [friendablePlayersList, setfriendablePlayersList] = useState(
     new Array<Player>()
   );
-  const stompClientRef = useContext(WebSocketContext);
+  const stompClient = useStompClient();
 
   useEffect(() => {
     const loggedPlayer = authService.getCurrentPlayer();
@@ -31,8 +31,6 @@ export default function FriendablePlayersList() {
       .catch((error) => console.log(error));
   }, []);
 
-  useEffect(() => {}, [friendablePlayersList]);
-
   const handleSendFriendRequest = (event, suggestedPlayer: Player) => {
     friendablePlayersList.splice(
       friendablePlayersList.indexOf(suggestedPlayer),
@@ -42,7 +40,7 @@ export default function FriendablePlayersList() {
       invitingPlayerId: authService.getCurrentPlayer().id,
       invitedPlayerId: suggestedPlayer.id,
     });
-    stompClientRef.current.sendMessage("/topic/javainuse", msg);
+    stompClient.publish({destination: "/app/invite/friend", body: msg});
   };
 
   const suggestedPlayerFriendList = friendablePlayersList.map(

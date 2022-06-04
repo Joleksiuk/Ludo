@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class GamePlayer {
 
     @Id
-    private Integer userId;
+    private Integer playerId;
     @Id
     private Integer gameId;
 

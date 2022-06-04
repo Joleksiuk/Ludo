@@ -1,7 +1,6 @@
 package pl.rokolujka.springreactludo.player;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 import pl.rokolujka.springreactludo.playerFriend.PlayerFriend;
 import pl.rokolujka.springreactludo.playerFriend.PlayerFriendRepository;
@@ -39,16 +38,20 @@ public class PlayerService {
         playerRepository.deleteById(id);
     }
 
-    public Optional<Player> findPlayerById(Integer id){
+    public Optional<Player> findPlayerById(Integer id) {
         return playerRepository.findById(id);
     }
 
-    public List<Player> findAllFriendsOfPlayer(Integer id){
-        List<PlayerFriend> friendListOfPlayer = playerFriendRepository.findAllByFirstUserId(id);
-        List<PlayerFriend> friendSecondOfPlayer = playerFriendRepository.findAllBySecondUserId(id);
+    public List<Player> findAllFriendsOfPlayer(Integer id) {
+        List<PlayerFriend> friendListOfPlayer = playerFriendRepository.findAllByFirstPlayerId(id);
+        List<PlayerFriend> friendSecondOfPlayer = playerFriendRepository.findAllBySecondPlayerId(id);
 
-        List<Integer> firstPlaceIds = friendListOfPlayer.stream().map(PlayerFriend::getSecondUserId).collect(Collectors.toList());
-        List<Integer> secondPlaceIds = friendSecondOfPlayer.stream().map(PlayerFriend::getFirstUserId).collect(Collectors.toList());
+        List<Integer> firstPlaceIds = friendListOfPlayer.stream()
+                .map(PlayerFriend::getSecondPlayerId)
+                .collect(Collectors.toList());
+        List<Integer> secondPlaceIds = friendSecondOfPlayer.stream()
+                .map(PlayerFriend::getFirstPlayerId)
+                .collect(Collectors.toList());
 
         firstPlaceIds.addAll(secondPlaceIds);
         return firstPlaceIds
@@ -59,7 +62,7 @@ public class PlayerService {
                 .collect(Collectors.toList());
     }
 
-    public List<Player> findAllSuggestedPlayerFriends(Integer id){
+    public List<Player> findAllSuggestedPlayerFriends(Integer id) {
         List<Player> players = findAllPlayers();
         players.removeAll(findAllFriendsOfPlayer(id));
         players.removeAll(findAllFriendInvitedPlayersOfPlayer(id));
@@ -68,12 +71,12 @@ public class PlayerService {
         return players;
     }
 
-    public List<Player> findAllFriendInvitedPlayersOfPlayer(Integer id){
-        List<PlayerFriendInvite> firstIdInvites = playerFriendInviteRepository.findAllByInvitingUserId(id);
-        List<PlayerFriendInvite> secondIdInvites = playerFriendInviteRepository.findAllByInvitedUserId(id);
+    public List<Player> findAllFriendInvitedPlayersOfPlayer(Integer id) {
+        List<PlayerFriendInvite> firstIdInvites = playerFriendInviteRepository.findAllByInvitingPlayerId(id);
+        List<PlayerFriendInvite> secondIdInvites = playerFriendInviteRepository.findAllByInvitedPlayerId(id);
 
-        List<Integer> firstPlaceIds = firstIdInvites.stream().map(PlayerFriendInvite::getInvitedUserId).collect(Collectors.toList());
-        List<Integer> secondPlaceIds = secondIdInvites.stream().map(PlayerFriendInvite::getInvitingUserId).collect(Collectors.toList());
+        List<Integer> firstPlaceIds = firstIdInvites.stream().map(PlayerFriendInvite::getInvitedPlayerId).collect(Collectors.toList());
+        List<Integer> secondPlaceIds = secondIdInvites.stream().map(PlayerFriendInvite::getInvitingPlayerId).collect(Collectors.toList());
 
         firstPlaceIds.addAll(secondPlaceIds);
 
@@ -85,7 +88,7 @@ public class PlayerService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Player> findPlayerByNickname(String nickname){
+    public Optional<Player> findPlayerByNickname(String nickname) {
         return playerRepository.findByNickname(nickname);
     }
 }

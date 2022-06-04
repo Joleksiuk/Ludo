@@ -9,7 +9,7 @@ import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Component
-public class WebSocketChatEventListener {
+public class WebSocketEventListener {
     @Autowired
     private SimpMessageSendingOperations messagingTemplate;
     @EventListener
