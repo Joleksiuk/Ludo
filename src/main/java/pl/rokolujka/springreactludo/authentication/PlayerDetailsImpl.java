@@ -18,14 +18,17 @@ public class PlayerDetailsImpl implements UserDetails {
 
     private String nickname;
 
+    private String picture;
+
     @JsonIgnore
     private String password_hash;
 
-    public PlayerDetailsImpl(Integer id, String nickname, String password_hash,
+    public PlayerDetailsImpl(Integer id, String nickname, String picture, String password_hash,
                              Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.nickname = nickname;
         this.password_hash = password_hash;
+        this.picture = picture;
         this.authorities = authorities;
     }
 
@@ -34,6 +37,7 @@ public class PlayerDetailsImpl implements UserDetails {
         return new PlayerDetailsImpl(
                 player.getId(),
                 player.getNickname(),
+                player.getPicture(),
                 player.getPasswordHash(),
                 authorities);
     }
