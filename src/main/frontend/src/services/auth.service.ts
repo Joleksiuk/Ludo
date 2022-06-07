@@ -16,15 +16,18 @@ class AuthService {
         return response.data;
       });
   }
+
   logout() {
     localStorage.removeItem("player");
   }
+
   register(nickname: string, password: string) {
     return axios.post(API_URL + "signup", {
         nickname,
         password
     });
   }
+
   getCurrentPlayer() {
     const playerStr = localStorage.getItem('player');
     if (playerStr) return JSON.parse(playerStr);

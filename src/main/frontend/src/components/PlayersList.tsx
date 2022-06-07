@@ -28,7 +28,10 @@ export default function PlayerList() {
           return (
             <ListItem key={player.id}>
               <ListItemAvatar>
-                <Avatar></Avatar>
+                <Avatar
+                  src={player.picture}
+                >
+                </Avatar>
               </ListItemAvatar>
               <ListItemText>{player.nickname}</ListItemText>
             </ListItem>

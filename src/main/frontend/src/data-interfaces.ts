@@ -13,7 +13,7 @@ export interface Board {
 export interface Player{
     id: number,
     nickname: string,
-    fullName: string,
+    picture: string,
 }
 
 export interface PlayerFriend{

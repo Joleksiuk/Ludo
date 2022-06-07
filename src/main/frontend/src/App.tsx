@@ -11,6 +11,7 @@ import MyGamesPage from "./components/pages/MyGamesPage";
 import FriendsPage from "./components/pages/FriendsPage";
 import RegisterPage from "./components/pages/RegisterPage";
 import NotFoundPage from "./components/pages/NotFoundPage";
+import ProfilePage from "./components/pages/ProfilePage";
 import FriendInviteNotification from "./components/FriendInviteNotification";
 import { WebSocketContext } from "./components/WebSocketProvider";
 import SockJSClient from "react-stomp";
@@ -51,6 +52,7 @@ function App() {
             <Route path="/friends" element={<FriendsPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/lobby" element={<LobbyPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Container>

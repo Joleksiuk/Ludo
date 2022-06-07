@@ -52,11 +52,10 @@ public class AuthController{
                     .body(new MessageResponse("Error: Nick name is already taken!"));
         }
 
-        Player player = new Player(null, signUpRequest.getNickname(), encoder.encode(signUpRequest.getPassword()));
+        Player player = new Player(null, signUpRequest.getNickname(), encoder.encode(signUpRequest.getPassword()),null);
 
         playerRepository.save(player);
 
         return ResponseEntity.ok(new MessageResponse("Player registered successfully!"));
     }
-
 }
