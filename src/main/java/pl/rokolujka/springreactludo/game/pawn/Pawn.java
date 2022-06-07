@@ -19,7 +19,7 @@ public class Pawn {
     @Id
     private Integer number;
     @Id
-    private Integer userId;
+    private Integer playerId;
     @Id
     private Integer gameId;
 

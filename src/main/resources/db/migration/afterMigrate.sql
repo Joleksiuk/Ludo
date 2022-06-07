@@ -21,7 +21,7 @@ ON CONFLICT DO NOTHING;
 -----------------------------------------
 -- TEST DATA FOR player_game
 -----------------------------------------
-INSERT INTO public.player_game(user_id, game_id, player_colour)
+INSERT INTO public.player_game(player_id, game_id, player_colour)
 VALUES (1, 1, 'red'), (2, 1, 'green'), (3,1,'blue'), (4,1,'yellow'),
        (1, 2, 'red'), (2, 2, 'green')
 ON CONFLICT DO NOTHING;
@@ -29,35 +29,35 @@ ON CONFLICT DO NOTHING;
 -----------------------------------------
 -- TEST DATA FOR pawn
 -----------------------------------------
-INSERT INTO public.pawn(number, did_start, progress, user_id, game_id)
+INSERT INTO public.pawn(number, did_start, progress, player_id, game_id)
 SELECT 1, false, 0, id, 1 FROM player WHERE player.id IN (1, 2, 3, 4)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.pawn(number, did_start, progress, user_id, game_id)
+INSERT INTO public.pawn(number, did_start, progress, player_id, game_id)
 SELECT 2, false, 0, id, 1 FROM player WHERE player.id IN (1, 2, 3, 4)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.pawn(number, did_start, progress, user_id, game_id)
+INSERT INTO public.pawn(number, did_start, progress, player_id, game_id)
 SELECT 3, false, 0, id, 1 FROM player WHERE player.id IN (1, 2, 3, 4)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.pawn(number, did_start, progress, user_id, game_id)
+INSERT INTO public.pawn(number, did_start, progress, player_id, game_id)
 SELECT 4, true, 0, id, 1 FROM player WHERE player.id IN (1, 2, 3, 4)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.pawn(number, did_start, progress, user_id, game_id)
+INSERT INTO public.pawn(number, did_start, progress, player_id, game_id)
 SELECT 1, false, 0, id, 2 FROM player WHERE player.id IN (1, 2)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.pawn(number, did_start, progress, user_id, game_id)
+INSERT INTO public.pawn(number, did_start, progress, player_id, game_id)
 SELECT 2, false, 0, id, 2 FROM player WHERE player.id IN (1, 2)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.pawn(number, did_start, progress, user_id, game_id)
+INSERT INTO public.pawn(number, did_start, progress, player_id, game_id)
 SELECT 3, false, 0, id, 2  FROM player WHERE player.id IN (1, 2)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.pawn(number, did_start, progress, user_id, game_id)
+INSERT INTO public.pawn(number, did_start, progress, player_id, game_id)
 SELECT 4, true, 0, id, 2 FROM player WHERE player.id IN (1, 2)
 ON CONFLICT DO NOTHING;
 END;

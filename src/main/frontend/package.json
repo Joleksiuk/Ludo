@@ -20,7 +20,7 @@
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
-    "react-stomp": "^5.1.0",
+    "react-stomp-hooks": "^2.1.0",
     "react-use-websocket": "^3.0.0",
     "sockjs-client": "^1.6.1",
     "stomp-client": "^0.9.0",

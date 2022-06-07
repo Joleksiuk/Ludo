@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import "./App.css";
 import LudoAppBar from "./components/layout/LudoAppBar";
 import { Box, Container } from "@mui/material";
@@ -12,57 +12,36 @@ import FriendsPage from "./components/pages/FriendsPage";
 import RegisterPage from "./components/pages/RegisterPage";
 import NotFoundPage from "./components/pages/NotFoundPage";
 import ProfilePage from "./components/pages/ProfilePage";
-import FriendInviteNotification from "./components/FriendInviteNotification";
-import { WebSocketContext } from "./components/WebSocketProvider";
-import SockJSClient from "react-stomp";
-import { PlayerFriendInvite } from "./data-interfaces";
+import { GameIdContext } from "./components/GameIdProvider";
+import { StompSessionProvider } from "react-stomp-hooks";
+import NotificationStack from "./components/NotificationStack";
 
 function App() {
-  const stompNotificationClient = useRef(null);
-  const [friendRequestNotifications, setFriendRequestNotifications] = useState<
-    PlayerFriendInvite[]
-  >([]);
-
-  useEffect(() => {}, [friendRequestNotifications]);
-
-  const handleMessage = (msg) => {
-    setFriendRequestNotifications((previous) => [...previous, msg]);
-  };
+  const gameId = useRef<number>();
 
   return (
-    <BrowserRouter>
-      <SockJSClient
-        url="http://localhost:8080/websocketApp"
-        topics={["/topic/javainuse"]}
-        onMessage={handleMessage}
-        onConnect={() => console.log("Socket connected!")}
-        onDisconnect={() => console.log("Socket disconnected!")}
-        ref={stompNotificationClient}
-      />
-
-      <WebSocketContext.Provider value={stompNotificationClient}>
-        <LudoAppBar title="Ludo"></LudoAppBar>
-        <Box sx={{ height: 100 }}></Box>
-        <Container maxWidth="xl">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/game" element={<GamePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/my-games" element={<MyGamesPage />} />
-            <Route path="/friends" element={<FriendsPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/lobby" element={<LobbyPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Container>
-        {friendRequestNotifications.map((playerFriendInvite, index) => (
-          <FriendInviteNotification key={index}
-            playerFriendInvite={playerFriendInvite}
-          ></FriendInviteNotification>
-        ))}
-      </WebSocketContext.Provider>
-    </BrowserRouter>
+    <StompSessionProvider url={"http://localhost:8080/websocketApp"}>
+      <GameIdContext.Provider value={gameId}>
+        <BrowserRouter>
+          <LudoAppBar title="Ludo"></LudoAppBar>
+          <Box sx={{ height: 100 }}></Box>
+          <Container maxWidth="xl">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/game" element={<GamePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/my-games" element={<MyGamesPage />} />
+              <Route path="/friends" element={<FriendsPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/lobby" element={<LobbyPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Container>
+        </BrowserRouter>
+        <NotificationStack></NotificationStack>
+      </GameIdContext.Provider>
+    </StompSessionProvider>
   );
 }
 

@@ -12,9 +12,6 @@ import java.util.List;
 @Service
 public class PlayerGameInviteService {
 
-    @Autowired
-    private RabbitTemplate template;
-
     private final PlayerGameInviteRepository playerGameInviteRepository;
 
     public List<PlayerGameInvite> findAllPlayerGameInvites() {

@@ -47,3 +47,7 @@ export interface AuthState{
     nickname: string,
     accessToken: string,
 }
+
+export interface GameStatusMessage {
+    diceValue: number
+}

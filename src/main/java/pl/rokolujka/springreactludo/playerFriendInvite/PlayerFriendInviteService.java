@@ -5,7 +5,6 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import pl.rokolujka.springreactludo.playerFriend.PlayerFriend;
 import pl.rokolujka.springreactludo.playerFriend.PlayerFriendRepository;
-import pl.rokolujka.springreactludo.rabbitMQ.RabbitConfig;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class PlayerFriendInviteService {
     }
 
     public void acceptFriendInvite(PlayerFriendInvite playerFriendInvite){
-        PlayerFriend playerFriend=new PlayerFriend(playerFriendInvite.invitedUserId,playerFriendInvite.invitingUserId);
+        PlayerFriend playerFriend=new PlayerFriend(playerFriendInvite.invitedPlayerId,playerFriendInvite.invitingPlayerId);
         playerFriendRepository.save(playerFriend);
         deletePlayerFriendInvite(playerFriendInvite);
     }

@@ -6,6 +6,6 @@ import java.util.List;
 
 
 public interface PlayerFriendRepository extends CrudRepository<PlayerFriend, PlayerFriendId> {
-    List<PlayerFriend> findAllByFirstUserId(Integer id);
-    List<PlayerFriend> findAllBySecondUserId(Integer id);
+    List<PlayerFriend> findAllByFirstPlayerId(Integer id);
+    List<PlayerFriend> findAllBySecondPlayerId(Integer id);
 }

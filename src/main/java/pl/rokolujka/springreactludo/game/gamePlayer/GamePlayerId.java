@@ -10,6 +10,6 @@ import java.io.Serializable;
 @Builder
 @Value
 public class GamePlayerId implements Serializable {
-    Integer userId;
+    Integer playerId;
     Integer gameId;
 }
