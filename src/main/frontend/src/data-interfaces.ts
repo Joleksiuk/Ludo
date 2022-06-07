@@ -27,9 +27,13 @@ export interface  PlayerGameInvite{
     gameId: number,
 }
 
-export interface PlayerFriendInvite{
-    invitingUserId:number,
-    invitedUserId: number,
+export class PlayerFriendInvite{
+    invitingUserId:number;
+    invitedUserId: number;
+    PlayerFriendInvite(invitingUserId:number, invitedUserId: number){
+        this.invitedUserId=invitedUserId;
+        this.invitingUserId=invitingUserId;
+    }
 }
 
 export interface Field {

@@ -14,6 +14,7 @@ import NotFoundPage from "./components/pages/NotFoundPage";
 import { GameIdContext } from "./components/GameIdProvider";
 import { StompSessionProvider } from "react-stomp-hooks";
 import NotificationStack from "./components/NotificationStack";
+import ProfilePage from "./components/pages/ProfilePage";
 
 function App() {
   const gameId = useRef<number>();
@@ -32,7 +33,8 @@ function App() {
               <Route path="/my-games" element={<MyGamesPage />} />
               <Route path="/friends" element={<FriendsPage />} />
               <Route path="/register" element={<RegisterPage />} />
-              <Route path="/lobby" element={<LobbyPage />} />
+              <Route path="/lobby/:id" element={<LobbyPage />} />
+              <Route path="/profile/:id" element={<ProfilePage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Container>

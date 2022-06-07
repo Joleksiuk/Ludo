@@ -1,6 +1,6 @@
-import { Box, List, ListItem, ListItemButton, ListItemText, ListSubheader } from "@mui/material";
+import { Box, Button, List, ListItem, ListItemButton, ListItemText, ListSubheader } from "@mui/material";
 import React, { useState, useEffect, useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "../axios";
 import { Game } from "../data-interfaces";
 import { GameIdContext } from "./GameIdProvider";
@@ -9,6 +9,8 @@ export default function GameList() {
   const [games, setGames] = useState(new Array<Game>());
   const gameId = useContext(GameIdContext)
   const [redirectToGame, setRedirectToGame] = useState<boolean>(false)
+
+  const navigate = useNavigate();
 
   const handleGameSelect = (clickedGame: Game) => {
     gameId.current = clickedGame.id;
@@ -23,6 +25,12 @@ export default function GameList() {
       })
       .catch((error) => console.log(error));
   }, []);
+
+
+  const navigateToLobby=(game:Game)=>{
+    navigate("/lobby/"+game.id);
+  }
+
   return (
     <Box>
       <List subheader={<ListSubheader>My games</ListSubheader>}>
@@ -31,10 +39,12 @@ export default function GameList() {
             <ListItemButton onClick={() => handleGameSelect(game)}>
               <ListItemText>{game.name}</ListItemText>
             </ListItemButton>
+            <Button onClick={() => navigateToLobby(game)}>Go to lobby</Button>
           </ListItem>
         ))}
       </List>
-      { redirectToGame ? <Navigate to='/game'/> : <></> }
+      
+      {/* { redirectToGame ? <Navigate to='/game'/> : <></> } */}
     </Box>
   );
 }
