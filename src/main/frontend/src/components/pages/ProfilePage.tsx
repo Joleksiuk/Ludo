@@ -25,6 +25,7 @@ export default function ProfilePage() {
     const [player, setPlayer] = React.useState<Player>();
     const [nickname, setNickname] = React.useState<string>('')
     const [picture, setPicture] = React.useState<string>('')
+    const [email, setEmail] = React.useState<string>('')
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl)
     const [change, setChange] = React.useState<boolean>(false)
@@ -33,9 +34,20 @@ export default function ProfilePage() {
         setAnchorEl(event.currentTarget);
     };
 
+    const handleGravatar = () => {
+        axios
+            .put<Player>("players/gravatar", {id: player.id, nickname: nickname, email:player.email })
+        axios
+            .get<Player>("players/"+authService.getCurrentPlayer().id)
+            .then((response) => {
+            setPicture(response.data.picture)
+            setAnchorEl(null)
+            })
+    }
+
     const handleClose = (image: string) => {
-        setAnchorEl(null);
-        setPicture(image);
+        setAnchorEl(null)
+        setPicture(image)
     };
 
     useEffect(() => {
@@ -44,17 +56,18 @@ export default function ProfilePage() {
             .then((response) => {
                 setNickname(response.data.nickname)
                 setPicture(response.data.picture)
-                setPlayer(response.data);
+                setPlayer(response.data)
             })
             .catch((error) => console.log(error));
     }, []);
 
     const handleSubmit = () => {
         axios
-            .put<Player>("players", {id: player.id, nickname: nickname, picture: picture })
-            .then(() => setChange(true))
+            .put<Player>("players", {id: player.id, nickname: nickname, picture: picture, email:player.email })
+            .then(() =>{
+                setChange(true)
+            } )
     }
-
 
     return (
         <Grid container justifyContent="center" alignItems="left" height={'50vh'}>
@@ -78,6 +91,7 @@ export default function ProfilePage() {
                         >
                             Change avatar
                         </Button>
+                        <Button variant="contained" onClick={handleGravatar}>Avatar from the Gravatar</Button>
                         <Menu
                             id="fade-menu"
                             MenuListProps={{
@@ -85,7 +99,7 @@ export default function ProfilePage() {
                             }}
                             anchorEl={anchorEl}
                             open={open}
-                            onClose={handleClose}
+                            onClose={() =>handleClose(picture)}
                             TransitionComponent={Fade}
                         >
                             <Button variant="contained" onClick={() => handleClose(picture)}>Close</Button>
@@ -108,7 +122,6 @@ export default function ProfilePage() {
         </Grid>
 
     );
-
 }
 
 const images = [

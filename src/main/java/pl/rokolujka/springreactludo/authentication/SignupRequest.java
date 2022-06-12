@@ -14,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 public class SignupRequest {
     @NotBlank
     String nickname;
+    String email;
 
     @NotBlank
     String password;

@@ -23,13 +23,15 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String nickname;
+    String email;
     @JsonIgnore
     String passwordHash;
 
     String picture;
 
-    public Player(String nickname, String passwordHash, String picture) {
+    public Player(String nickname,String email, String passwordHash, String picture) {
         this.nickname=nickname;
+        this.email=email;
         this.passwordHash = passwordHash;
         this.picture = picture;
     }

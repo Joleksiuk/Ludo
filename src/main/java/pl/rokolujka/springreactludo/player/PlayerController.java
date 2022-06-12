@@ -31,6 +31,11 @@ public class PlayerController {
         playerService.updatePlayer(player);
     }
 
+    @PutMapping("gravatar")
+    public void updateGravatar(@RequestBody Player player) {
+        playerService.updateGravatar(player);
+    }
+
     @DeleteMapping("{id}")
     public void deletePlayer(@PathVariable Integer id) {
         playerService.deletePlayerById(id);
