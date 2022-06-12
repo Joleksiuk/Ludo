@@ -1,7 +1,8 @@
 import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Board from "../board/Board";
-import { GameIdContext } from "../GameIdProvider";
+import { useStompClient, useSubscription } from "react-stomp-hooks";
+import { useParams } from "react-router-dom";
 import Dice from "../Dice";
 import Turn from "../Turn";
 import authService from "../../services/auth.service";
@@ -9,7 +10,11 @@ import { Game, Player } from "../../data-interfaces";
 import ludoAxios from "../../ludo-axios";
 
 export default function GamePage() {
-  const gameId = React.useContext(GameIdContext);
+
+  const {id } = useParams();
+
+  const [diceValue, setDiceValue] = React.useState<number>(1);
+  const stompClient = useStompClient();
 
   const [diceRollEnabled, setDiceRollEnabled] = useState<boolean>(false)
 
@@ -35,13 +40,13 @@ export default function GamePage() {
       <Box sx={{ padding: "20px" }}>
         <Grid container spacing={0}>
           <Grid item xs={9}>
-            <Board gameId={gameId.current}></Board>
+            <Board gameId={parseInt(id)}></Board>
           </Grid>
           <Grid item xs={2}>
             <Paper sx={{ height: "100%" }}>
               <Stack spacing={2}>
-                <Turn gameId={gameId.current} onTurnChange={toggleDiceButton}></Turn>
-                <Dice gameId={gameId.current} onDiceRoll={invertDiceButtonEnabled} enabled={diceRollEnabled}></Dice>
+                <Turn gameId={parseInt(id)} onTurnChange={toggleDiceButton}></Turn>
+                <Dice gameId={parseInt(id)} onDiceRoll={invertDiceButtonEnabled} enabled={diceRollEnabled}></Dice>
               </Stack>
             </Paper>
           </Grid>

@@ -55,7 +55,12 @@ public class GameController {
         return gameService.getPossibleMoves(nickname, id);
     }
 
-    @GetMapping("/{id}/board/fields")
+    @GetMapping(value="{id}")
+    public Game getGameById(@PathVariable Integer id){
+        return gameService.findGameById(id);
+    }
+
+    @GetMapping(value = "{id}/board/fields")
     public List<List<BoardField>> getGameBoardFields(@PathVariable Integer id) {
        return gameService.getGameFieldMatrixById(id);
     }
@@ -69,5 +74,9 @@ public class GameController {
     public Player getGameTurnPlayer(@PathVariable Integer id) {
         return gameService.getGameTurn(id);
 
+    }
+    @PutMapping(value="{id}/start")
+    public void startGame(@PathVariable Integer id){
+        gameService.setStartGameTimestamp(id);
     }
 }

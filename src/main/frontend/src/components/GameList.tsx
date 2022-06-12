@@ -13,6 +13,7 @@ import {
 import React from "react";
 import ludoAxios from "../ludo-axios";
 import AddGameForm from "./AddGameForm";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { Game } from "../data-interfaces";
 import { GameIdContext } from "./GameIdProvider";
@@ -42,6 +43,12 @@ export default function VotingSessionList() {
   const [listUpdated, setListUpdated] = React.useState<boolean>(false);
   const [redirectToGame, setRedirectToGame] = React.useState<boolean>(false)
   const gameId = React.useContext(GameIdContext)
+
+  const navigate = useNavigate();
+
+  const navigateToLobby=(game:Game)=>{
+    navigate("/lobby/"+game.id);
+  }
 
   const handleGameSelect = (clickedGame: Game) => {
     gameId.current = clickedGame.id;
@@ -89,6 +96,7 @@ export default function VotingSessionList() {
             <Button onClick={() => handleEdit(game)}>Edit</Button>
             <Button onClick={() => handleDelete(game)}>Delete</Button>
             <Button onClick={() => handleGameSelect(game)}>Go to game</Button>
+            <Button onClick={() => navigateToLobby(game)}>Go to lobby</Button>
           </ButtonGroup>
         </TableCell>
       </TableRow>

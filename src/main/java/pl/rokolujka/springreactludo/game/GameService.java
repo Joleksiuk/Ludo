@@ -12,6 +12,9 @@ import pl.rokolujka.springreactludo.game.pawn.PawnRepository;
 import pl.rokolujka.springreactludo.player.Player;
 import pl.rokolujka.springreactludo.player.PlayerService;
 
+import java.sql.Timestamp;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -157,6 +160,18 @@ public class GameService {
 
     public List<List<BoardField>> getGameFieldMatrixById(Integer gameId) {
         return boardService.getFieldMatrixByBoard(getGameBoardByGameId(gameId));
+    }
+
+    public void setStartGameTimestamp(Integer id){
+        Game game  = gameRepository.findGameById(id).orElse(null);
+        if(game!=null){
+            game.setStartDate(new Timestamp(System.currentTimeMillis()));
+            gameRepository.save(game);
+        }
+    }
+
+    public Game findGameById(Integer id){
+        return gameRepository.findGameById(id).orElse(null);
     }
 
     public Player getGameTurn(Integer gameId) {

@@ -6,12 +6,20 @@ export interface Game {
     boardCode: string,
     diceThrownInTurn: boolean,
     turnPlayerId: number
+    startDate: string,
 }
 
 export interface Board {
     code: string,
     name: string,
     maxPlayers: number,
+}
+
+export interface GamePlayer{
+    playerId: number,
+    gameId: number,
+    playerColour: string,
+
 }
 
 export interface Player{
@@ -31,9 +39,13 @@ export interface  PlayerGameInvite{
     gameId: number,
 }
 
-export interface PlayerFriendInvite{
-    invitingUserId:number,
-    invitedUserId: number,
+export class PlayerFriendInvite{
+    invitingUserId:number;
+    invitedUserId: number;
+    PlayerFriendInvite(invitingUserId:number, invitedUserId: number){
+        this.invitedUserId=invitedUserId;
+        this.invitingUserId=invitingUserId;
+    }
 }
 
 export interface Field {
@@ -68,4 +80,16 @@ export interface AuthState{
 export interface BoardMove {
     fromFieldId: number,
     toFieldId: number
+}
+
+export interface LobbyStatusMessage{
+
+    playerId:number,
+    color: string,
+    gameStarted:boolean,
+}
+
+export interface Lobby{
+    players: Player[],
+    mapColorToPlayer: Map<string,string>,
 }
