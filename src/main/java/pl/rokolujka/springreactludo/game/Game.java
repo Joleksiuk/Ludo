@@ -20,4 +20,8 @@ public class Game {
     private Integer id;
     private String name;
     private String boardCode;
+    private Integer currentDiceValue;
+    private Integer turnPlayerId;
+    private Integer winnerPlayerId;
+    private boolean diceThrownInTurn;
 }

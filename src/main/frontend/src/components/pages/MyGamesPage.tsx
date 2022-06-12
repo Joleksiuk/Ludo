@@ -6,7 +6,6 @@ export default function MyGamesPage() {
   return (
     <>
       <GameList></GameList>
-      <AddGameForm></AddGameForm>
     </>
   );
 }

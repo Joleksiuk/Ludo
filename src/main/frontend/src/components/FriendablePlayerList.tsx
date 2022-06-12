@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect} from "react";
 import { useStompClient } from "react-stomp-hooks";
-import axios from "../axios";
+import ludoAxios from "../ludo-axios";
 import { Player } from "../data-interfaces";
 import authService from "../services/auth.service";
 
@@ -23,7 +23,7 @@ export default function FriendablePlayersList() {
     if (loggedPlayer === null) return;
 
     const httpGetRequest = "players/suggest_friends/" + loggedPlayer.id;
-    axios
+    ludoAxios
       .get<Player[]>(httpGetRequest)
       .then((response) => {
         setfriendablePlayersList(response.data);

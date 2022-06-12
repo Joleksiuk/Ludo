@@ -1,15 +1,16 @@
 package pl.rokolujka.springreactludo.game.gamePlayer;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Value;
+import lombok.*;
+import pl.rokolujka.springreactludo.game.pawn.Pawn;
 
 import java.io.Serializable;
 
 @EqualsAndHashCode
 @Builder
-@Value
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class GamePlayerId implements Serializable {
-    Integer playerId;
-    Integer gameId;
+    private Integer playerId;
+    private Integer gameId;
 }

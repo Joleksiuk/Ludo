@@ -1,29 +1,35 @@
 import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Board from "../board/Board";
 import { GameIdContext } from "../GameIdProvider";
-import { useStompClient, useSubscription } from "react-stomp-hooks";
-import { GameStatusMessage } from "../../data-interfaces";
+import Dice from "../Dice";
+import Turn from "../Turn";
+import authService from "../../services/auth.service";
+import { Game, Player } from "../../data-interfaces";
+import ludoAxios from "../../ludo-axios";
 
 export default function GamePage() {
-  const [diceValue, setDiceValue] = React.useState<number>(1);
   const gameId = React.useContext(GameIdContext);
-  const stompClient = useStompClient();
 
-  const handleRoll = (event: React.MouseEvent) => {
-    event.preventDefault();
-    if (stompClient && gameIdDefined()) {
-      stompClient.publish({destination: `/app/game/${gameId.current}/dice`});
-    } 
-  };
+  const [diceRollEnabled, setDiceRollEnabled] = useState<boolean>(false)
 
-  const handleStatusUpdate = (message: GameStatusMessage) => {
-    setDiceValue(message.diceValue);
+  useEffect(() => {
+    ludoAxios.get<Game>(`games/${gameId.current}`)
+    .then(response => response.data)
+    .then(game => setDiceRollEnabled(!game.diceThrownInTurn && authService.isPlayerLoggedIn() && authService.getCurrentPlayer().id === game.turnPlayerId))
+  }, [])
+
+  const toggleDiceButton = (playerTurnParam: Player): void => {
+      if (!authService.isPlayerLoggedIn()) {
+        setDiceRollEnabled(false);
+      }
+
+      setDiceRollEnabled(playerTurnParam.id === authService.getCurrentPlayer().id)
   }
 
-  const gameIdDefined = () => gameId.current !== null;
-
-  useSubscription(gameIdDefined() ? [`/topic/game.${gameId.current}`] : [], (message) => handleStatusUpdate(JSON.parse(message.body)))
+  const invertDiceButtonEnabled = () => {
+    setDiceRollEnabled(enabled => !enabled)
+  }
 
   return (
       <Box sx={{ padding: "20px" }}>
@@ -33,20 +39,9 @@ export default function GamePage() {
           </Grid>
           <Grid item xs={2}>
             <Paper sx={{ height: "100%" }}>
-              <Stack alignItems="center" spacing={2}>
-                <Button
-                  type="button"
-                  variant="contained"
-                  onClick={(event) => handleRoll(event)}
-                >
-                  Roll the dice
-                </Button>
-                <Typography>
-                  You rolled: {diceValue}, game id: {gameId.current}
-                </Typography>
-                <Box>
-                  <Typography>Chat or other</Typography>
-                </Box>
+              <Stack spacing={2}>
+                <Turn gameId={gameId.current} onTurnChange={toggleDiceButton}></Turn>
+                <Dice gameId={gameId.current} onDiceRoll={invertDiceButtonEnabled} enabled={diceRollEnabled}></Dice>
               </Stack>
             </Paper>
           </Grid>

@@ -10,20 +10,20 @@ ON CONFLICT DO NOTHING;
 -----------------------------------------
 -- TEST DATA FOR game
 -----------------------------------------
-INSERT INTO public.game(id, name, board_code)
-VALUES (1, 'test game on standard board', 'standard')
+INSERT INTO public.game(id, name, board_code, turn_player_id)
+VALUES (1, 'test game on standard board', 'standard', 1)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.game(id, name, board_code)
-VALUES (2, 'test game on small board', 'small')
+INSERT INTO public.game(id, name, board_code, turn_player_id)
+VALUES (2, 'test game on small board', 'small', 1)
 ON CONFLICT DO NOTHING;
 
 -----------------------------------------
 -- TEST DATA FOR player_game
 -----------------------------------------
-INSERT INTO public.player_game(player_id, game_id, player_colour)
-VALUES (1, 1, 'red'), (2, 1, 'green'), (3,1,'blue'), (4,1,'yellow'),
-       (1, 2, 'red'), (2, 2, 'green')
+INSERT INTO public.player_game(player_id, game_id, player_colour, next_player_id)
+VALUES (1, 1, 'red', 2), (2, 1, 'green', 3), (3, 1, 'blue', 4), (4, 1, 'yellow', 1),
+       (1, 2, 'red', 2), (2, 2, 'green', 1)
 ON CONFLICT DO NOTHING;
 
 -----------------------------------------

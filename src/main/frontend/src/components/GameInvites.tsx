@@ -1,6 +1,6 @@
 import { Button, List, ListItem, ListItemText } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import axios from "../axios";
+import axios from "../ludo-axios";
 import { PlayerGameInvite } from "../data-interfaces";
 
 export default function PlayerGameInviteList() {
