@@ -4,6 +4,9 @@ import Board from "../board/Board";
 import { GameIdContext } from "../GameIdProvider";
 import { useStompClient, useSubscription } from "react-stomp-hooks";
 import { GameStatusMessage } from "../../data-interfaces";
+import RedirectToLogin from "../RedirectToLogin";
+import {Navigate} from "react-router-dom";
+import authService from "../../services/auth.service";
 
 export default function GamePage() {
   const [diceValue, setDiceValue] = React.useState<number>(1);
@@ -26,6 +29,7 @@ export default function GamePage() {
   useSubscription(gameIdDefined() ? [`/topic/game.${gameId.current}`] : [], (message) => handleStatusUpdate(JSON.parse(message.body)))
 
   return (
+  <>{authService.isPlayerLoggedIn() ? (
       <Box sx={{ padding: "20px" }}>
         <Grid container spacing={0}>
           <Grid item xs={9}>
@@ -51,6 +55,7 @@ export default function GamePage() {
             </Paper>
           </Grid>
         </Grid>
-      </Box>
+      </Box>):
+  <Navigate to ='/redirect'/>} </>
   );
 }

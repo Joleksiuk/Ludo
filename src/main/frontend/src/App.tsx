@@ -15,6 +15,7 @@ import ProfilePage from "./components/pages/ProfilePage";
 import { GameIdContext } from "./components/GameIdProvider";
 import { StompSessionProvider } from "react-stomp-hooks";
 import NotificationStack from "./components/NotificationStack";
+import RedirectToLogin from "./components/RedirectToLogin";
 
 function App() {
   const gameId = useRef<number>();
@@ -36,6 +37,7 @@ function App() {
               <Route path="/lobby" element={<LobbyPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="*" element={<NotFoundPage />} />
+              <Route path="/redirect" element={<RedirectToLogin />} />
             </Routes>
           </Container>
         </BrowserRouter>

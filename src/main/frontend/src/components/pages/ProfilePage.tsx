@@ -20,6 +20,7 @@ import ImageList from "@mui/material/ImageList";
 import {styled} from "@mui/material/styles";
 import ButtonBase from "@mui/material/ButtonBase";
 import {Navigate} from "react-router-dom";
+import RedirectToLogin from "../RedirectToLogin";
 
 export default function ProfilePage() {
     const [player, setPlayer] = React.useState<Player>();
@@ -34,15 +35,20 @@ export default function ProfilePage() {
         setAnchorEl(event.currentTarget);
     };
 
+    const getPlayer = () =>{
+    axios
+        .get<Player>("players/"+authService.getCurrentPlayer().id)
+        .then((response) => {
+        setNickname(response.data.nickname)
+        setPicture(response.data.picture)
+        setPlayer(response.data)
+        })
+        .catch((error) => console.log(error));
+    }
     const handleGravatar = () => {
         axios
             .put<Player>("players/gravatar", {id: player.id, nickname: nickname, email:player.email })
-        axios
-            .get<Player>("players/"+authService.getCurrentPlayer().id)
-            .then((response) => {
-            setPicture(response.data.picture)
-            setAnchorEl(null)
-            })
+        getPlayer()
     }
 
     const handleClose = (image: string) => {
@@ -51,14 +57,8 @@ export default function ProfilePage() {
     };
 
     useEffect(() => {
-        axios
-            .get<Player>("players/"+authService.getCurrentPlayer().id)
-            .then((response) => {
-                setNickname(response.data.nickname)
-                setPicture(response.data.picture)
-                setPlayer(response.data)
-            })
-            .catch((error) => console.log(error));
+        if(!authService.isPlayerLoggedIn()) return;
+        getPlayer()
     }, []);
 
     const handleSubmit = () => {
@@ -70,57 +70,57 @@ export default function ProfilePage() {
     }
 
     return (
+    <>{authService.isPlayerLoggedIn() ? (
         <Grid container justifyContent="center" alignItems="left" height={'50vh'}>
-            {authService.getCurrentPlayer() === null ? <Navigate to='/login'/> : (
-            <Paper>
-                { change ? <Alert severity="info">Changes saved</Alert> : <></>}
-                <Box sx={{margin: '35px', minWidth:'300px'}}>
-                    <Stack spacing={2}>
-                        <Typography justifyContent="center" variant='h3' component='h3'>My Profile</Typography>
-                        <Avatar
-                            sx={{ width: 300, height: 300}}
-                            src={picture}
-                        />
-                        <Button
-                            variant="contained"
-                            id="fade-button"
-                            aria-controls={open ? 'fade-menu' : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={open ? 'true' : undefined}
-                            onClick={handleClick}
-                        >
-                            Change avatar
-                        </Button>
-                        <Button variant="contained" onClick={handleGravatar}>Avatar from the Gravatar</Button>
-                        <Menu
-                            id="fade-menu"
-                            MenuListProps={{
-                                'aria-labelledby': 'fade-button',
-                            }}
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={() =>handleClose(picture)}
-                            TransitionComponent={Fade}
-                        >
-                            <Button variant="contained" onClick={() => handleClose(picture)}>Close</Button>
-                            <ImageList sx={{ width: 700, height: 400 }} cols={4} rowHeight={100}>
-                                {images.map((image) => (
-                                    <ImageButton key={image} style={{ width: image,}} >
-                                        <ImageSrc style={{ backgroundImage: `url(${image})` }} />
-                                        <Button sx={{width:100, height:100}} onClick={() => handleClose(image)}></Button>
-                                    </ImageButton>
-                                ))}
-                            </ImageList>
-                            <Button variant="contained" onClick={() => handleClose(null)}>Delete</Button>
-                        </Menu>
-                        <Typography variant='h5' component='h5'>Nickname</Typography>
-                        <TextField value={nickname} onChange = {(event) => setNickname(event.target.value)}  ></TextField>
-                        <Button variant="contained" onClick={handleSubmit} >Save changes</Button>
-                    </Stack>
-                </Box>
-            </Paper>)}
-        </Grid>
-
+                    <Paper>
+                        { change ? <Alert severity="info">Changes saved</Alert> : <></>}
+                        <Box sx={{margin: '35px', minWidth:'300px'}}>
+                            <Stack spacing={3}>
+                                <Typography justifyContent="center" variant='h3' component='h3'>My Profile</Typography>
+                                <Avatar
+                                    sx={{ width: 300, height: 300}}
+                                    src={picture}
+                                />
+                                <Button
+                                    variant="contained"
+                                    id="fade-button"
+                                    aria-controls={open ? 'fade-menu' : undefined}
+                                    aria-haspopup="true"
+                                    aria-expanded={open ? 'true' : undefined}
+                                    onClick={handleClick}
+                                >
+                                    Change avatar
+                                </Button>
+                                <Button variant="contained" onClick={handleGravatar}>Avatar from the Gravatar</Button>
+                                <Menu
+                                    id="fade-menu"
+                                    MenuListProps={{
+                                        'aria-labelledby': 'fade-button',
+                                    }}
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={() =>handleClose(picture)}
+                                    TransitionComponent={Fade}
+                                >
+                                    <Button variant="contained" onClick={() => handleClose(picture)}>Close</Button>
+                                    <ImageList sx={{ width: 700, height: 400 }} cols={4} rowHeight={100}>
+                                        {images.map((image) => (
+                                            <ImageButton key={image} style={{ width: image,}} >
+                                                <ImageSrc style={{ backgroundImage: `url(${image})` }} />
+                                                <Button sx={{width:100, height:100}} onClick={() => handleClose(image)}></Button>
+                                            </ImageButton>
+                                        ))}
+                                    </ImageList>
+                                    <Button variant="contained" onClick={() => handleClose(null)}>Delete</Button>
+                                </Menu>
+                                <Typography variant='h5' component='h5'>Nickname</Typography>
+                                <TextField value={nickname} onChange = {(event) => setNickname(event.target.value)}  ></TextField>
+                                <Button variant="contained" onClick={handleSubmit} >Save changes</Button>
+                            </Stack>
+                        </Box>
+                    </Paper>
+                </Grid>
+    ): <Navigate to ='/redirect'/>} </>
     );
 }
 
