@@ -7,7 +7,10 @@ import authService from "../../services/auth.service";
 
 export default function MyGamesPage() {
   return (
-  {authService.isPlayerLoggedIn() 
-    ? <GameList></GameList>
-    : <Navigate to ='/redirect'/>}
+    <>
+    {authService.isPlayerLoggedIn() 
+      ? <GameList></GameList>
+      : <Navigate to ='/redirect'/>}
+    </>
+  );
 }
