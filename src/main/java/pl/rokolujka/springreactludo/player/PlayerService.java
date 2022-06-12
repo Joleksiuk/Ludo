@@ -2,6 +2,7 @@ package pl.rokolujka.springreactludo.player;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.rokolujka.springreactludo.integration.GravatarService;
 import pl.rokolujka.springreactludo.game.gamePlayer.GamePlayer;
 import pl.rokolujka.springreactludo.game.gamePlayer.GamePlayerRepository;
 import pl.rokolujka.springreactludo.playerFriend.PlayerFriend;
@@ -24,6 +25,7 @@ public class PlayerService {
     private final PlayerRepository playerRepository;
     private final PlayerFriendRepository playerFriendRepository;
     private final PlayerFriendInviteRepository playerFriendInviteRepository;
+    private final GravatarService gravatarService;
     private final PlayerGameInviteRepository playerGameInviteRepository;
     private final GamePlayerRepository gamePlayerRepository;
 
@@ -44,7 +46,6 @@ public class PlayerService {
         Player oldPlayer = findPlayerById(player.getId()).orElseThrow();
         player.setPasswordHash(oldPlayer.getPasswordHash());
         playerRepository.save(player);
-
     }
 
     public void deletePlayerById(Integer id) {
@@ -125,5 +126,15 @@ public class PlayerService {
 
     public Optional<Player> findPlayerByNickname(String nickname) {
         return playerRepository.findByNickname(nickname);
+    }
+
+    public void updateGravatar (Player player) {
+        if(player.getId()==null){
+            throw new IllegalArgumentException("Player id cannot be null");
+        }
+        Player oldPlayer = findPlayerById(player.getId()).orElseThrow();
+        player.setPasswordHash(oldPlayer.getPasswordHash());
+        player.setPicture(gravatarService.findGravatarUrl(player.getEmail()).orElse(null));
+        playerRepository.save(player);
     }
 }

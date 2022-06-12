@@ -15,6 +15,7 @@ import authService from '../../services/auth.service'
 export default function RegisterPage() {
 
   const [nickname, setNickname] = React.useState('')
+  const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [passwordRepeat, setPasswordRepeat] = React.useState('')
   const [error, setError] = React.useState('')
@@ -24,12 +25,10 @@ export default function RegisterPage() {
     if (password !== passwordRepeat) {
       setError('Passwords do not match');
     } else {
-      authService.register(nickname, password)
+      authService.register(nickname,email, password)
           .then(() => setRegisterSuccessful(true))
           .catch(() => setError('Could not register'))
     }
-
-
   }
 
   return (
@@ -40,6 +39,7 @@ export default function RegisterPage() {
             <Typography variant='h6' component='h2'>Register to our page</Typography>
             { error !== '' ? <Alert severity='error'>{error}</Alert> : <></>}
             <TextField label="Login" value={nickname} onChange={event => setNickname(event.target.value)}></TextField>
+            <TextField label="Email" value={email} onChange={event => setEmail(event.target.value)}></TextField>
             <TextField label='Password' type='password' value={password} onChange={event => setPassword(event.target.value)}></TextField>
             <TextField label='Repeat password' type='password' value={passwordRepeat} onChange={event => setPasswordRepeat(event.target.value)}></TextField>
             <Button variant="contained" onClick={handleSubmit}>Register</Button>

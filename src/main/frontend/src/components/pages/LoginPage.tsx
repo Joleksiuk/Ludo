@@ -39,7 +39,6 @@ export default function LoginPage() {
             <Box sx={{display: 'flex', justifyContent: 'center'}}>
               <Typography align="center" variant='button' color='grey'>or</Typography>
             </Box>
-            <Button variant="outlined" className='discord-button'>Login with Discord</Button>
             <Button variant='outlined' href="/register">Register</Button>
           </Stack>
         </Box>
