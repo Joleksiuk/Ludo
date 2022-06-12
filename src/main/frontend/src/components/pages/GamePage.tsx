@@ -1,6 +1,7 @@
 import { Box, Grid, Paper, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Board from "../board/Board";
+import RedirectToLogin from "../RedirectToLogin";
 import { useParams } from "react-router-dom";
 import Dice from "../Dice";
 import Turn from "../Turn";
@@ -33,6 +34,7 @@ export default function GamePage() {
   }
 
   return (
+  <>{authService.isPlayerLoggedIn() ? (
       <Box sx={{ padding: "20px" }}>
         <Grid container spacing={0}>
           <Grid item xs={9}>
@@ -47,6 +49,7 @@ export default function GamePage() {
             </Paper>
           </Grid>
         </Grid>
-      </Box>
+      </Box>):
+  <Navigate to ='/redirect'/>} </>
   );
 }
