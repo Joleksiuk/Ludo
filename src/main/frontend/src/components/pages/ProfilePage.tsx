@@ -15,7 +15,7 @@ import {
     Stack,
     Alert,
 } from "@mui/material";
-import axios from "../../axios";
+import axios from "../../ludo-axios";
 import ImageList from "@mui/material/ImageList";
 import {styled} from "@mui/material/styles";
 import ButtonBase from "@mui/material/ButtonBase";

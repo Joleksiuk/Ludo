@@ -4,7 +4,7 @@ export default function authHeader() {
     if (playerStr)
       player = JSON.parse(playerStr);
     if (player && player.accessToken) {
-      return { Authorization: 'Bearer ' + player.accessToken };
+      return { Authorization: 'Bearer: ' + player.accessToken };
     } else {
       return {};
     }

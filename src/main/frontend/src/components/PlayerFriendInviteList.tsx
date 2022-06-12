@@ -10,7 +10,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import axios from "../axios";
+import ludoAxios from "../ludo-axios";
 import { PlayerFriendInvite } from "../data-interfaces";
 
 export default function PlayerFriendInviteList() {
@@ -19,7 +19,7 @@ export default function PlayerFriendInviteList() {
   );
 
   useEffect(() => {
-    axios
+    ludoAxios
       .get<PlayerFriendInvite[]>("player_friend_invites")
       .then((response) => {
         setplayerFriendInvites(response.data);
@@ -29,14 +29,24 @@ export default function PlayerFriendInviteList() {
   
 
   const handleAccept=(event, playerFriendInvite)=>{
-    axios.put("player_friend_invites/accept",playerFriendInvite)
+    ludoAxios.put("player_friend_invites/accept",playerFriendInvite)
     .catch((error) => console.log(error));
+    refreshInviteList(playerFriendInvite);
     
   }
 
   const handleDecline=(event, playerFriendInvite)=>{
-    axios.put("player_friend_invites/decline",playerFriendInvite)
+    ludoAxios.put("player_friend_invites/decline",playerFriendInvite)
     .catch((error) => console.log(error));
+    refreshInviteList(playerFriendInvite);
+  }
+
+  const refreshInviteList=(playerFriendInvite:PlayerFriendInvite)=>{
+    playerFriendInvites.splice(
+      playerFriendInvites.indexOf(playerFriendInvite),
+      1
+    );
+    setplayerFriendInvites(playerFriendInvites);
   }
   
 
@@ -45,7 +55,7 @@ export default function PlayerFriendInviteList() {
       <List subheader={<ListSubheader>Friend invites</ListSubheader>}>
         {playerFriendInvites.map((playerFriendInvite) => {
           return (
-            <ListItem key={playerFriendInvite.invitingUserId.toString()+playerFriendInvite.invitedUserId.toString()}>
+            <ListItem>
               <ListItemAvatar>
                 <Avatar></Avatar>
               </ListItemAvatar>

@@ -7,14 +7,14 @@ import {
   ListSubheader,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import axios from "../axios";
+import ludoAxios from "../ludo-axios";
 import { Player } from "../data-interfaces";
 
 export default function PlayerList() {
   const [players, setplayer] = useState(new Array<Player>());
 
   useEffect(() => {
-    axios
+    ludoAxios
       .get<Player[]>("players")
       .then((response) => {
         setplayer(response.data);

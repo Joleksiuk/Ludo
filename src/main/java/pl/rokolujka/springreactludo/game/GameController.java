@@ -1,47 +1,82 @@
 package pl.rokolujka.springreactludo.game;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import pl.rokolujka.springreactludo.authentication.JwtUtils;
 import pl.rokolujka.springreactludo.game.board.BoardField;
+import pl.rokolujka.springreactludo.game.board.BoardMove;
 import pl.rokolujka.springreactludo.game.pawn.PawnInfo;
+import pl.rokolujka.springreactludo.player.Player;
 
 import java.util.List;
 
+@RequiredArgsConstructor
+@RequestMapping("games")
 @RestController
 public class GameController {
 
     private final GameService gameService;
+    private final JwtUtils jwtUtils;
 
-    @Autowired
-    public GameController(GameService gameService) {
-        this.gameService = gameService;
-    }
-
-    @RequestMapping("games")
+    @GetMapping
     public List<Game> getAllGames() {
         return gameService.findAllGames();
     }
 
-    @RequestMapping(method= RequestMethod.POST, value="game")
+    @PostMapping
     public void createGame(@RequestBody Game game) {gameService.createGame(game);}
 
-    @RequestMapping(method=RequestMethod.PUT, value="game")
+    @PutMapping
     public void updateGame(@RequestBody Game game) {
         gameService.updateGame(game);
     }
 
-    @RequestMapping(method=RequestMethod.DELETE, value="game/{id}")
+    @DeleteMapping("{id}")
     public void deleteGame(@PathVariable Integer id) {
         gameService.deleteGameById(id);
     }
 
-    @RequestMapping(method=RequestMethod.GET, value="game/{id}/pawns")
+    @GetMapping("{id}/pawns")
     public List<PawnInfo> getGamePawns(@PathVariable Integer id) {
         return gameService.findGamePawnsById(id);
     }
 
-    @RequestMapping(value = "game/{id}/board/fields")
+    @GetMapping("{id}/dice")
+    public Integer getDiceValue(@PathVariable Integer id) {
+        return gameService.getDiceValue(id);
+    }
+
+    @GetMapping("{id}/possible-moves")
+    public List<BoardMove> getPossibleMoves(@PathVariable Integer id, @RequestHeader(name="Authorization") String authHeader) {
+        String nickname = jwtUtils.getPlayerNameFromAuthorizationHeader(authHeader);
+        if (gameService.isOtherPlayersTurn(nickname, id)) {
+            return List.of();
+        }
+        return gameService.getPossibleMoves(nickname, id);
+    }
+
+    @GetMapping(value="{id}")
+    public Game getGameById(@PathVariable Integer id){
+        return gameService.findGameById(id);
+    }
+
+    @GetMapping(value = "{id}/board/fields")
     public List<List<BoardField>> getGameBoardFields(@PathVariable Integer id) {
        return gameService.getGameFieldMatrixById(id);
+    }
+
+    @GetMapping("{id}/winner")
+    public Player getGameWinner(@PathVariable Integer id) {
+        return gameService.findWinner(id).orElse(null);
+    }
+
+    @GetMapping("{id}/turn")
+    public Player getGameTurnPlayer(@PathVariable Integer id) {
+        return gameService.getGameTurn(id);
+
+    }
+    @PutMapping(value="{id}/start")
+    public void startGame(@PathVariable Integer id){
+        gameService.setStartGameTimestamp(id);
     }
 }

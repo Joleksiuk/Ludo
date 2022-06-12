@@ -14,6 +14,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static pl.rokolujka.springreactludo.game.board.BoardEnum.SMALL;
+import static pl.rokolujka.springreactludo.game.board.ColorEnum.BLUE;
+import static pl.rokolujka.springreactludo.game.board.ColorEnum.YELLOW;
+
 @RequiredArgsConstructor
 @Service
 public class BoardService {
@@ -42,20 +46,6 @@ public class BoardService {
         return listOfRows;
     }
 
-    public Integer getStartingFieldIdForPawn(Integer pawnNumber, BoardEnum board, ColorEnum color) {
-        StartingBayPath path = new StartingBayPath(board);
-        return path.getPathPoints(color).get(pawnNumber).getId();
-    }
-
-    public Integer getFieldIdForPawn(BoardEnum board, Pawn pawn, ColorEnum color) {
-        if (!pawn.getDidStart()) {
-            return getStartingFieldIdForPawn(pawn.getNumber(), board, color);
-        }
-
-        MainPath mainPath = new MainPath(board);
-        return mainPath.getPathPoints(color).get(pawn.getProgress()).getId();
-    }
-
      private List<List<BoardField>> getAllRows(BufferedReader reader, BoardEnum board) throws IOException {
         List<List<BoardField>> listOfRows = new ArrayList<>();
         String currentLine = reader.readLine();
@@ -82,10 +72,26 @@ public class BoardService {
         return row;
     }
 
-    private Optional<BoardEnum> findBoardByNumberOfPlayers(Integer numberOfPlayers) {
-        return Stream.of(BoardEnum.values())
-                .filter(boardEnum -> numberOfPlayers <= boardEnum.getMaxPlayers())
-                .min(Comparator.comparingInt(BoardEnum::getMaxPlayers));
+    public Integer getFieldId(BoardEnum board, Integer progress, ColorEnum color) {
+        MainPath mainPath = new MainPath(board);
+        return mainPath.getPathPoints(color).get(progress).getId();
+    }
+
+    public Integer getPathLength(BoardEnum board) {
+        return new MainPath(board).getPathPoints(ColorEnum.RED).size();
+    }
+
+    public Integer getFieldIdForPawn(BoardEnum board, Pawn pawn, ColorEnum color) {
+        if (!pawn.getDidStart()) {
+            return getStartingBayFieldIdForPawn(pawn.getNumber(), board, color);
+        }
+
+        return getFieldId(board, pawn.getProgress(), color);
+    }
+
+    public Integer getStartingBayFieldIdForPawn(Integer pawnNumber, BoardEnum board, ColorEnum color) {
+        StartingBayPath path = new StartingBayPath(board);
+        return path.getPathPoints(color).get(pawnNumber).getId();
     }
 
     private BoardField createField(String code, int rowNumber, int columnNumber, int columns) {
@@ -105,6 +111,23 @@ public class BoardService {
                 .color(color)
                 .id(BoardField.getId(columnNumber, rowNumber, columns))
                 .build();
+    }
+
+    public Map<ColorEnum, Integer> getColorProgressMap(BoardEnum board, Integer fieldId) {
+        Map<ColorEnum, Integer> progressMap = new HashMap<>();
+        MainPath mainPath = new MainPath(board);
+        List<ColorEnum> colors = Stream.of(ColorEnum.values())
+                .filter(color -> board.equals(SMALL) && !color.equals(YELLOW) && !color.equals(BLUE))
+                .collect(Collectors.toList());
+
+        for (ColorEnum color : colors) {
+            mainPath.getPathPoints(color)
+                    .stream()
+                    .filter(point -> point.getId().equals(fieldId))
+                    .findFirst()
+                    .ifPresent(point -> progressMap.put(color, mainPath.getPathPoints(color).indexOf(point)));
+        }
+        return progressMap;
     }
 }
 

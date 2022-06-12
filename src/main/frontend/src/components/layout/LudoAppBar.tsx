@@ -100,14 +100,6 @@ export default function LudoAppBar(props: AppBarProps) {
               </ListItemButton>
             </ListItem>
             <ListItem>
-              <ListItemButton href="/game">
-                <ListItemIcon>
-                  <CasinoIcon />
-                </ListItemIcon>
-                <ListItemText>Game</ListItemText>
-              </ListItemButton>
-            </ListItem>
-            <ListItem>
               <ListItemButton href="/my-games">
                 <ListItemIcon>
                   <CasinoIcon />

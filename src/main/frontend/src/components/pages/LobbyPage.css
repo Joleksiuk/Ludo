@@ -1,0 +1,41 @@
+
+.circle {
+    position: relative;
+    border-color: #424242;
+    border-style: solid;
+    width: 2rem;
+    height: 2rem;
+    margin: auto;
+    border-radius: 50%;
+}
+
+.red {
+    background-color: rgb(190, 0, 0);
+}
+
+.yellow {
+    background-color: rgb(229, 231, 87);
+}
+
+.green {
+    background-color: rgb(67, 167, 42);
+}
+
+.blue {
+    background-color: rgb(62, 123, 255);
+}
+
+.blank{
+    background-color: white;
+}
+
+.picked{
+    position: relative;
+    border-color: #505251;
+    background-color: #cedbd6;
+    border-style: solid;
+    width: 4rem;
+    height: 4rem;
+    margin: auto;
+    border-radius:20%;
+}

@@ -23,7 +23,9 @@ public class PlayerFriendInviteController {
 
     @PostMapping
     public void createPlayerFriendInvite(@RequestBody PlayerFriendInvite playerFriendInvite) {
-        playerFriendInviteService.createPlayerFriendInvite(playerFriendInvite);
+        if(playerFriendInvite.invitedPlayerId!=playerFriendInvite.invitingPlayerId){
+            playerFriendInviteService.createPlayerFriendInvite(playerFriendInvite);
+        }
     }
 
     @DeleteMapping
