@@ -1,7 +1,6 @@
-import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Box, Grid, Paper, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Board from "../board/Board";
-import { useStompClient, useSubscription } from "react-stomp-hooks";
 import { useParams } from "react-router-dom";
 import Dice from "../Dice";
 import Turn from "../Turn";
@@ -11,15 +10,12 @@ import ludoAxios from "../../ludo-axios";
 
 export default function GamePage() {
 
-  const {id } = useParams();
-
-  const [diceValue, setDiceValue] = React.useState<number>(1);
-  const stompClient = useStompClient();
+  const { id } = useParams();
 
   const [diceRollEnabled, setDiceRollEnabled] = useState<boolean>(false)
 
   useEffect(() => {
-    ludoAxios.get<Game>(`games/${gameId.current}`)
+    ludoAxios.get<Game>(`games/${id}`)
     .then(response => response.data)
     .then(game => setDiceRollEnabled(!game.diceThrownInTurn && authService.isPlayerLoggedIn() && authService.getCurrentPlayer().id === game.turnPlayerId))
   }, [])

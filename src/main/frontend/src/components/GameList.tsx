@@ -13,11 +13,10 @@ import {
 import React from "react";
 import ludoAxios from "../ludo-axios";
 import AddGameForm from "./AddGameForm";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { Game } from "../data-interfaces";
 import { GameIdContext } from "./GameIdProvider";
-import { Navigate } from "react-router-dom";
 
 const modalStyle: React.CSSProperties = {
   position: "absolute" as "absolute",
@@ -38,11 +37,7 @@ export default function VotingSessionList() {
     Array<Game>
   >([]);
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
-  const [isFormAdd, setIsAdd] = React.useState<boolean>(true);
-  const [selected, setSelected] = React.useState<Game | undefined>();
   const [listUpdated, setListUpdated] = React.useState<boolean>(false);
-  const [redirectToGame, setRedirectToGame] = React.useState<boolean>(false)
-  const gameId = React.useContext(GameIdContext)
 
   const navigate = useNavigate();
 
@@ -50,18 +45,15 @@ export default function VotingSessionList() {
     navigate("/lobby/"+game.id);
   }
 
-  const handleGameSelect = (clickedGame: Game) => {
-    gameId.current = clickedGame.id;
-    setRedirectToGame(true);
+  const navigateToGame = (clickedGame: Game) => {
+    navigate("/game/"+clickedGame.id)
   }
 
   const handleOpenAddEditModal = (add: boolean) => {
     setModalOpen(true);
-    setIsAdd(add);
   };
   const handleCloseAddEditModal = () => {
     setModalOpen(false);
-    setSelected(undefined);
     setListUpdated(true);
   };
 
@@ -73,29 +65,16 @@ export default function VotingSessionList() {
       .then(() => setListUpdated(false));
   }, [listUpdated]);
 
-  const handleEdit = (game: Game) => {
-    setSelected(game);
-    handleOpenAddEditModal(false);
-  };
-  const handleDelete = (game: Game) => {
-    ludoAxios
-      .delete(API_URL + "/" + game.id)
-      .then(() => setListUpdated(true));
-  };
-
   const Row = (game: Game) => {
     return (
       <TableRow key={game.id}>
         <TableCell>{game.name}</TableCell>
         <TableCell>
-          //TODO add date
-          {moment().format(DATE_FORMAT)}
+          {moment(game.startDate).format(DATE_FORMAT)}
         </TableCell>
         <TableCell>
           <ButtonGroup>
-            <Button onClick={() => handleEdit(game)}>Edit</Button>
-            <Button onClick={() => handleDelete(game)}>Delete</Button>
-            <Button onClick={() => handleGameSelect(game)}>Go to game</Button>
+            <Button onClick={() => navigateToGame(game)}>Go to game</Button>
             <Button onClick={() => navigateToLobby(game)}>Go to lobby</Button>
           </ButtonGroup>
         </TableCell>
@@ -133,7 +112,6 @@ export default function VotingSessionList() {
         </Table>
       </TableContainer>
       <FormModal></FormModal>
-      { redirectToGame && <Navigate to='/game'/> }
     </Box>
   );
 }
