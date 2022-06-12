@@ -2,7 +2,7 @@ import { Box, Grid, Paper, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Board from "../board/Board";
 import RedirectToLogin from "../RedirectToLogin";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import Dice from "../Dice";
 import Turn from "../Turn";
 import authService from "../../services/auth.service";
