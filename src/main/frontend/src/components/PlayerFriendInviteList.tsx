@@ -31,12 +31,22 @@ export default function PlayerFriendInviteList() {
   const handleAccept=(event, playerFriendInvite)=>{
     axios.put("player_friend_invites/accept",playerFriendInvite)
     .catch((error) => console.log(error));
+    refreshInviteList(playerFriendInvite);
     
   }
 
   const handleDecline=(event, playerFriendInvite)=>{
     axios.put("player_friend_invites/decline",playerFriendInvite)
     .catch((error) => console.log(error));
+    refreshInviteList(playerFriendInvite);
+  }
+
+  const refreshInviteList=(playerFriendInvite:PlayerFriendInvite)=>{
+    playerFriendInvites.splice(
+      playerFriendInvites.indexOf(playerFriendInvite),
+      1
+    );
+    setplayerFriendInvites(playerFriendInvites);
   }
   
 
@@ -45,7 +55,7 @@ export default function PlayerFriendInviteList() {
       <List subheader={<ListSubheader>Friend invites</ListSubheader>}>
         {playerFriendInvites.map((playerFriendInvite) => {
           return (
-            <ListItem key={playerFriendInvite.invitingUserId.toString()+playerFriendInvite.invitedUserId.toString()}>
+            <ListItem>
               <ListItemAvatar>
                 <Avatar></Avatar>
               </ListItemAvatar>

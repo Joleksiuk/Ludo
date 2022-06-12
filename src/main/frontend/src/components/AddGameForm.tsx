@@ -39,7 +39,7 @@ export default function AddGameForm() {
 
   const handleSubmit = (event: React.FormEvent): void => {
     event.preventDefault();
-    axios.post<Game>("game", { name: gameName, boardCode: gameBoardCode });
+    axios.post<Game>("games", { name: gameName, boardCode: gameBoardCode });
   };
 
   return (

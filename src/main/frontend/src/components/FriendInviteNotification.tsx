@@ -1,4 +1,5 @@
 import { Button, Snackbar, SnackbarContent } from "@mui/material";
+import axios from "axios";
 import { useState } from "react";
 import { PlayerFriendInvite } from "../data-interfaces";
 import authService from "../services/auth.service";
@@ -13,10 +14,12 @@ export default function FriendInviteNotification(
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(true);
 
   const handleAccept = (event) => {
+    axios.put<PlayerFriendInvite>("player_friend_invites/accept", props.playerFriendInvite).catch((error) => console.log(error));
     setSnackbarOpen(false);
   };
 
   const handleDecline = (event) => {
+    axios.put<PlayerFriendInvite>("player_friend_invites/decline", props.playerFriendInvite).catch((error) => console.log(error));
     setSnackbarOpen(false);
   };
 

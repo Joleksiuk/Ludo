@@ -3,8 +3,10 @@ package pl.rokolujka.springreactludo.game.board;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
@@ -79,5 +81,9 @@ public enum BoardCharacteristicPointsEnum {
                 .filter(pointsEnum -> pointsEnum.getBoardEnum().equals(board))
                 .findFirst()
                 .orElseThrow();
+    }
+    public static List<ColorEnum> getColorsOfBoard(BoardEnum boardEnum){
+        return new ArrayList<>(fromBoardEnum(boardEnum).getStartingPoints().keySet());
+
     }
 }

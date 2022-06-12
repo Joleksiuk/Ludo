@@ -2,6 +2,8 @@ package pl.rokolujka.springreactludo.game;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface GameRepository extends CrudRepository<Game, Integer> {
+import java.util.Optional;
 
+public interface GameRepository extends CrudRepository<Game, Integer> {
+    Optional<Game> findGameById(Integer id);
 }

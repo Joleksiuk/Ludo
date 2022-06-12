@@ -1,10 +1,11 @@
 package pl.rokolujka.springreactludo.game.gamePlayer;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface GamePlayerRepository extends JpaRepository<GamePlayer, GamePlayerId> {
+public interface GamePlayerRepository extends CrudRepository<GamePlayer, GamePlayerId> {
 
     List<GamePlayer> findByGameId(Integer gameId);
+    List<GamePlayer> findAllGamePLayersByGameId(Integer gameId);
 }

@@ -1,8 +1,10 @@
-.Pawn {
+
+.circle {
+    position: relative;
     border-color: #424242;
     border-style: solid;
-    width: 50%;
-    height: 50%;
+    width: 2rem;
+    height: 2rem;
     margin: auto;
     border-radius: 50%;
 }
@@ -24,5 +26,16 @@
 }
 
 .blank{
-    background-color: black;
+    background-color: white;
+}
+
+.picked{
+    position: relative;
+    border-color: #505251;
+    background-color: #cedbd6;
+    border-style: solid;
+    width: 4rem;
+    height: 4rem;
+    margin: auto;
+    border-radius:20%;
 }
