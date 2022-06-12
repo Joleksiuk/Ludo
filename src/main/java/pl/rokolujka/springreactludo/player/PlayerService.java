@@ -38,7 +38,13 @@ public class PlayerService {
     }
 
     public void updatePlayer(Player player) {
+        if(player.getId()==null){
+            throw new IllegalArgumentException("Player id cannot be null");
+        }
+        Player oldPlayer = findPlayerById(player.getId()).orElseThrow();
+        player.setPasswordHash(oldPlayer.getPasswordHash());
         playerRepository.save(player);
+
     }
 
     public void deletePlayerById(Integer id) {
@@ -104,6 +110,7 @@ public class PlayerService {
         });
         return  playersOfGame;
     }
+
 
     public List<Player> findAllPlayersInvitedToGameByGameId(Integer gameId){
         List<PlayerGameInvite> playerGameInvites =playerGameInviteRepository.findByGameId(gameId);

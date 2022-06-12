@@ -1,10 +1,12 @@
-package pl.rokolujka.springreactludo.player;
+package pl.rokolujka.springreactludo.lobby;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.rokolujka.springreactludo.player.Player;
+import pl.rokolujka.springreactludo.player.PlayerService;
 
 import java.util.List;
 
@@ -12,11 +14,13 @@ import java.util.List;
 @RequestMapping("lobby")
 public class LobbyController {
 
-    private final  PlayerService playerService;
+    private final PlayerService playerService;
+    private final LobbyService lobbyService;
 
     @Autowired
-    public LobbyController(PlayerService playerService) {
+    public LobbyController(PlayerService playerService, LobbyService lobbyService) {
         this.playerService = playerService;
+        this.lobbyService = lobbyService;
     }
 
     @GetMapping("invited/{id}")
@@ -24,8 +28,12 @@ public class LobbyController {
         return playerService.findAllPlayersInvitedToGameByGameId(id);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("{id}/players")
     public List<Player> findAllPlayersOfGameByGameId(@PathVariable Integer id) {
         return playerService.findAllPlayersOfGameByGameId(id);
+    }
+    @GetMapping("{gameId}")
+    public Lobby findLobbyByGameId(@PathVariable Integer gameId){
+        return lobbyService.findLobbyByGameId(gameId);
     }
 }

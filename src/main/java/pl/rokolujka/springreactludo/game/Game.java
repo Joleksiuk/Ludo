@@ -6,11 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "game")
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Game {
@@ -20,4 +21,7 @@ public class Game {
     private Integer id;
     private String name;
     private String boardCode;
+    private Timestamp startDate;
+
 }
+

@@ -16,8 +16,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import CasinoIcon from "@mui/icons-material/Casino";
 import HomeIcon from "@mui/icons-material/Home";
+import PeopleIcon from '@mui/icons-material/People';
 import React, { useEffect } from "react";
 import authService from "../../services/auth.service";
+import {Navigate} from "react-router-dom";
 
 interface AppBarProps {
   title: string;
@@ -48,6 +50,9 @@ export default function LudoAppBar(props: AppBarProps) {
     };
   return (
     <Box sx={{ flexGrow: 1 }}>
+      {
+        shouldLogout ? <Navigate to="/" ></Navigate> : <></>
+      }
       <AppBar>
         <Toolbar>
           <IconButton
@@ -77,12 +82,21 @@ export default function LudoAppBar(props: AppBarProps) {
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
         <Box onClick={() => setOpen(false)}>
           <List>
+
             <ListItem>
               <ListItemButton href="/">
                 <ListItemIcon>
                   <HomeIcon />
                 </ListItemIcon>
                 <ListItemText>Home</ListItemText>
+              </ListItemButton>
+            </ListItem>
+            <ListItem>
+              <ListItemButton href="/profile">
+                <ListItemIcon>
+                  <PersonIcon></PersonIcon>
+                </ListItemIcon>
+                <ListItemText>My Profile</ListItemText>
               </ListItemButton>
             </ListItem>
             <ListItem>
@@ -104,7 +118,7 @@ export default function LudoAppBar(props: AppBarProps) {
             <ListItem>
               <ListItemButton href="/friends">
                 <ListItemIcon>
-                  <PersonIcon></PersonIcon>
+                  <PeopleIcon></PeopleIcon>
                 </ListItemIcon>
                 <ListItemText>Friends</ListItemText>
               </ListItemButton>

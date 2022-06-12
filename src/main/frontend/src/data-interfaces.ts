@@ -1,7 +1,8 @@
 export interface Game {
     id: number,
     name: string,
-    boardCode: string
+    boardCode: string,
+    startDate: string,
 }
 
 export interface Board {
@@ -10,10 +11,17 @@ export interface Board {
     maxPlayers: number,
 }
 
+export interface GamePlayer{
+    playerId: number,
+    gameId: number,
+    playerColour: string,
+
+}
+
 export interface Player{
     id: number,
     nickname: string,
-    fullName: string,
+    picture: string,
 }
 
 export interface PlayerFriend{
@@ -54,4 +62,16 @@ export interface AuthState{
 
 export interface GameStatusMessage {
     diceValue: number
+}
+
+export interface LobbyStatusMessage{
+    
+    playerId:number,
+    color: string,
+    gameStarted:boolean,
+}
+
+export interface Lobby{
+    players: Player[],
+    mapColorToPlayer: Map<string,string>,
 }

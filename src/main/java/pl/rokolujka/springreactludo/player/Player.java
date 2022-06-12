@@ -1,5 +1,6 @@
 package pl.rokolujka.springreactludo.player;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,10 +23,14 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String nickname;
+    @JsonIgnore
     String passwordHash;
 
-    public Player(String nickname, String passwordHash) {
+    String picture;
+
+    public Player(String nickname, String passwordHash, String picture) {
         this.nickname=nickname;
         this.passwordHash = passwordHash;
+        this.picture = picture;
     }
 }

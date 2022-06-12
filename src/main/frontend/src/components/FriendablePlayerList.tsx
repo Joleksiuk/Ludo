@@ -1,10 +1,10 @@
 import {
-  Button,
-  List,
-  ListItem,
-  ListItemText,
-  ListSubheader,
-  Box,
+    Button,
+    List,
+    ListItem,
+    ListItemText,
+    ListSubheader,
+    Box, ListItemAvatar, Avatar,
 } from "@mui/material";
 import React, { useState, useEffect} from "react";
 import { useStompClient } from "react-stomp-hooks";
@@ -49,7 +49,13 @@ export default function FriendablePlayersList() {
   const suggestedPlayerFriendList = friendablePlayersList.map(
     (suggestedPlayerFriend: Player, index) => (
       <ListItem key={index}>
-        <ListItemText primary={`${suggestedPlayerFriend.id}`} />
+          <ListItemAvatar>
+              <Avatar
+                  src={suggestedPlayerFriend.picture}
+              >
+              </Avatar>
+          </ListItemAvatar>
+        <ListItemText primary={suggestedPlayerFriend.nickname} />
         <Button
           onClick={(event) =>
             handleSendFriendRequest(event, suggestedPlayerFriend)

@@ -8,6 +8,7 @@ import pl.rokolujka.springreactludo.game.pawn.PawnInfo;
 import java.util.List;
 
 @RestController
+@RequestMapping("games")
 public class GameController {
 
     private final GameService gameService;
@@ -17,31 +18,40 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @RequestMapping("games")
+    @GetMapping
     public List<Game> getAllGames() {
         return gameService.findAllGames();
     }
 
-    @RequestMapping(method= RequestMethod.POST, value="game")
+    @PostMapping
     public void createGame(@RequestBody Game game) {gameService.createGame(game);}
 
-    @RequestMapping(method=RequestMethod.PUT, value="game")
+    @PutMapping
     public void updateGame(@RequestBody Game game) {
         gameService.updateGame(game);
     }
 
-    @RequestMapping(method=RequestMethod.DELETE, value="game/{id}")
+    @DeleteMapping(value="{id}")
     public void deleteGame(@PathVariable Integer id) {
         gameService.deleteGameById(id);
     }
 
-    @RequestMapping(method=RequestMethod.GET, value="game/{id}/pawns")
+    @GetMapping(value="{id}/pawns")
     public List<PawnInfo> getGamePawns(@PathVariable Integer id) {
         return gameService.findGamePawnsById(id);
     }
 
-    @RequestMapping(value = "game/{id}/board/fields")
+    @GetMapping(value="{id}")
+    public Game getGameById(@PathVariable Integer id){
+        return gameService.findGameById(id);
+    }
+
+    @GetMapping(value = "{id}/board/fields")
     public List<List<BoardField>> getGameBoardFields(@PathVariable Integer id) {
        return gameService.getGameFieldMatrixById(id);
+    }
+    @PutMapping(value="{id}/start")
+    public void startGame(@PathVariable Integer id){
+        gameService.setStartGameTimestamp(id);
     }
 }

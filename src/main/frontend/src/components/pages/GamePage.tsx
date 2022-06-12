@@ -4,16 +4,19 @@ import Board from "../board/Board";
 import { GameIdContext } from "../GameIdProvider";
 import { useStompClient, useSubscription } from "react-stomp-hooks";
 import { GameStatusMessage } from "../../data-interfaces";
+import { useParams } from "react-router-dom";
 
 export default function GamePage() {
+
+  const {id } = useParams();
+
   const [diceValue, setDiceValue] = React.useState<number>(1);
-  const gameId = React.useContext(GameIdContext);
   const stompClient = useStompClient();
 
   const handleRoll = (event: React.MouseEvent) => {
     event.preventDefault();
     if (stompClient && gameIdDefined()) {
-      stompClient.publish({destination: `/app/game/${gameId.current}/dice`});
+      stompClient.publish({destination: `/app/game/${id}/dice`});
     } 
   };
 
@@ -21,15 +24,15 @@ export default function GamePage() {
     setDiceValue(message.diceValue);
   }
 
-  const gameIdDefined = () => gameId.current !== null;
+  const gameIdDefined = () => id !== null;
 
-  useSubscription(gameIdDefined() ? [`/topic/game.${gameId.current}`] : [], (message) => handleStatusUpdate(JSON.parse(message.body)))
+  useSubscription(gameIdDefined() ? [`/topic/game.${id}`] : [], (message) => handleStatusUpdate(JSON.parse(message.body)))
 
   return (
       <Box sx={{ padding: "20px" }}>
         <Grid container spacing={0}>
           <Grid item xs={9}>
-            <Board gameId={gameId.current}></Board>
+            <Board gameId={parseInt(id)}></Board>
           </Grid>
           <Grid item xs={2}>
             <Paper sx={{ height: "100%" }}>
@@ -42,7 +45,7 @@ export default function GamePage() {
                   Roll the dice
                 </Button>
                 <Typography>
-                  You rolled: {diceValue}, game id: {gameId.current}
+                  You rolled: {diceValue}, game id: {id}
                 </Typography>
                 <Box>
                   <Typography>Chat or other</Typography>
