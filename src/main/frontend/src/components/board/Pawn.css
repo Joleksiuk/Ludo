@@ -23,6 +23,7 @@
     background-color: rgb(62, 123, 255);
 }
 
-.blank{
-    background-color: black;
+.highlighted {
+    background-color: blueviolet;
+    border-color: rgb(145, 145, 145);
 }

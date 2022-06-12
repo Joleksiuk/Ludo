@@ -6,6 +6,7 @@ import lombok.Value;
 @Builder
 @Value
 public class PawnInfo {
+    Integer number;
     Integer fieldId;
     String color;
 }

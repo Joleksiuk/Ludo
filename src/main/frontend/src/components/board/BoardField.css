@@ -28,3 +28,7 @@
 .bordered.blank {
     border-color: #bababa;
 }
+
+.bordered.highlighted {
+    background-color: blueviolet;
+}

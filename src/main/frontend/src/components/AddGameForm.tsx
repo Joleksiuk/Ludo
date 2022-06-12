@@ -1,4 +1,4 @@
-import axios from "../axios";
+import axios from "../ludo-axios";
 import React, { useEffect, useState } from "react";
 import { Board, Game } from "../data-interfaces";
 import Button from "@mui/material/Button";
@@ -13,7 +13,11 @@ import {
   FormLabel,
 } from "@mui/material";
 
-export default function AddGameForm() {
+interface AddGameFormProps {
+  onSave: () => void
+}
+
+export default function AddGameForm(props: AddGameFormProps) {
   const [boards, setBoards] = useState<Board[]>(new Array<Board>());
 
   const [gameName, setGameName] = useState<string>();
@@ -40,10 +44,11 @@ export default function AddGameForm() {
   const handleSubmit = (event: React.FormEvent): void => {
     event.preventDefault();
     axios.post<Game>("games", { name: gameName, boardCode: gameBoardCode });
+    props.onSave();
   };
 
   return (
-    <FormControl>
+    <FormControl sx={{margin: '20px'}}>
       <Stack spacing={2}>
       <Typography variant='h6' component='h2'>Add game</Typography>
       <TextField

@@ -1,34 +1,23 @@
 package pl.rokolujka.springreactludo.authentication;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class JwtResponse {
-    private String token;
-    private String type = "Bearer";
-    private Integer id;
-    private String nickname;
+    @Setter
+    @Getter
+    private String accessToken;
+    @Setter
+    @Getter
+    private String tokenType = "Bearer";
+    @Getter
+    private final Integer id;
+    @Getter
+    private final String nickname;
 
     public JwtResponse(String accessToken, Integer id, String nickname){
-        this.token = accessToken;
+        this.accessToken = accessToken;
         this.id = id;
         this.nickname=nickname;
-    }
-
-    public String getAccessToken(){
-        return token;
-    }
-
-    public void setAccessToken(String accessToken){
-        this.token=accessToken;
-    }
-
-    public String getTokenType(){
-        return type;
-    }
-
-    public void setTokenType(String tokenType){
-        this.type = tokenType;
-    }
-
-    public Integer getId(){
-        return id;
     }
 }

@@ -4,7 +4,7 @@ import { Field } from '../../data-interfaces'
 
 interface BoardFieldProps {
   field: Field
-  children: JSX.Element,
+  children: JSX.Element
 }
 
 

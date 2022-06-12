@@ -10,8 +10,8 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "game")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Game {
@@ -21,7 +21,10 @@ public class Game {
     private Integer id;
     private String name;
     private String boardCode;
+    private Integer currentDiceValue;
+    private Integer turnPlayerId;
+    private Integer winnerPlayerId;
+    private boolean diceThrownInTurn;
     private Timestamp startDate;
 
 }
-

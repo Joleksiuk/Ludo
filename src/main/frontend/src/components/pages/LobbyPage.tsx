@@ -1,5 +1,5 @@
 import { Avatar, Button, Card, CardHeader, Grid, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, ListSubheader, CardContent, Box } from '@mui/material';
-import axios from '../../axios'
+import axios from '../../ludo-axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Game, GamePlayer, Lobby, LobbyStatusMessage, Player } from '../../data-interfaces';
@@ -90,7 +90,7 @@ export default function LobbyPage() {
       axios.get<Lobby>("lobby/"+id)
       .then((response)=>{ 
         setLobby(response.data); console.log(response.data);
-        const map = new Map(Object.entries(response.data.mapColorToPlayer));
+        const map = new Map<string,string>(Object.entries(response.data.mapColorToPlayer));
         setLobbyMap(map);
         setLobbyPlayerList(response.data.players);
       })

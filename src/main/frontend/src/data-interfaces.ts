@@ -1,7 +1,11 @@
+import { Color } from "@mui/material";
+
 export interface Game {
     id: number,
     name: string,
     boardCode: string,
+    diceThrownInTurn: boolean,
+    turnPlayerId: number
     startDate: string,
 }
 
@@ -50,9 +54,22 @@ export interface Field {
     id: number
 }
 
-export interface PawnInfo {
-    color: string,
-    fieldId: number,
+export class PawnInfo {
+    color: string;
+    fieldId: number;
+    number: number;
+
+    constructor(color: string, fieldId: number, number: number) {
+        this.color = color;
+        this.fieldId = fieldId;
+        this.number = number;
+    }
+
+    makeMove(move: BoardMove) {
+        if (move.fromFieldId === this.fieldId) {
+            this.fieldId = move.toFieldId;
+        }
+    }
 }
 
 export interface AuthState{
@@ -60,12 +77,13 @@ export interface AuthState{
     accessToken: string,
 }
 
-export interface GameStatusMessage {
-    diceValue: number
+export interface BoardMove {
+    fromFieldId: number,
+    toFieldId: number
 }
 
 export interface LobbyStatusMessage{
-    
+
     playerId:number,
     color: string,
     gameStarted:boolean,

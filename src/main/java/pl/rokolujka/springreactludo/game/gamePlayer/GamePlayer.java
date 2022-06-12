@@ -26,4 +26,6 @@ public class GamePlayer {
 
     private String playerColour;
 
+    private Integer nextPlayerId;
+
 }
