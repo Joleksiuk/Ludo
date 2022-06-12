@@ -48,10 +48,12 @@ public class PlayerController {
     public List<Player> findAllPlayerFriends(@PathVariable Integer id) {
         return playerService.findAllFriendsOfPlayer(id);
     }
-
     @GetMapping("suggest_friends/{id}")
     public List<Player> findAllSuggestedPlayerFriends(@PathVariable Integer id) {
         return playerService.findAllSuggestedPlayerFriends(id);
     }
+
+
+
 
 }

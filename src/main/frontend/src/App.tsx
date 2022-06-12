@@ -28,12 +28,12 @@ function App() {
           <Container maxWidth="xl">
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/game" element={<GamePage />} />
+              <Route path="/game/:id" element={<GamePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/my-games" element={<MyGamesPage />} />
               <Route path="/friends" element={<FriendsPage />} />
               <Route path="/register" element={<RegisterPage />} />
-              <Route path="/lobby" element={<LobbyPage />} />
+              <Route path="/lobby/:id" element={<LobbyPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>

@@ -1,0 +1,6 @@
+BEGIN;
+
+ALTER TABLE IF EXISTS public.game
+    ADD COLUMN IF NOT EXISTS dice_thrown_in_turn BOOLEAN NOT NULL DEFAULT false;
+
+END;

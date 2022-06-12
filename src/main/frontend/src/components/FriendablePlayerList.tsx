@@ -8,8 +8,8 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect} from "react";
 import { useStompClient } from "react-stomp-hooks";
-import axios from "../axios";
-import { Player } from "../data-interfaces";
+import ludoAxios from "../ludo-axios";
+import { Player, PlayerFriendInvite } from "../data-interfaces";
 import authService from "../services/auth.service";
 
 export default function FriendablePlayersList() {
@@ -18,12 +18,13 @@ export default function FriendablePlayersList() {
   );
   const stompClient = useStompClient();
 
+
   useEffect(() => {
     const loggedPlayer = authService.getCurrentPlayer();
     if (loggedPlayer === null) return;
 
     const httpGetRequest = "players/suggest_friends/" + loggedPlayer.id;
-    axios
+    ludoAxios
       .get<Player[]>(httpGetRequest)
       .then((response) => {
         setfriendablePlayersList(response.data);
@@ -41,6 +42,8 @@ export default function FriendablePlayersList() {
       invitedPlayerId: suggestedPlayer.id,
     });
     stompClient.publish({destination: "/app/invite/friend", body: msg});
+
+    ludoAxios.post<PlayerFriendInvite>("/player_friend_invites", JSON.parse(msg)).catch((error) => console.log(error));
   };
 
   const suggestedPlayerFriendList = friendablePlayersList.map(

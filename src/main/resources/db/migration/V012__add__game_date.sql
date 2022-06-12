@@ -1,0 +1,5 @@
+BEGIN;
+
+ALTER TABLE IF EXISTS public.game ADD COLUMN IF NOT EXISTS start_date date NULL;
+
+END;

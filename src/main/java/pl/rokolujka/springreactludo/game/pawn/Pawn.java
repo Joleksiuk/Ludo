@@ -1,9 +1,7 @@
 package pl.rokolujka.springreactludo.game.pawn;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import pl.rokolujka.springreactludo.game.gamePlayer.GamePlayerId;
 
 import javax.persistence.*;
 
@@ -28,4 +26,28 @@ public class Pawn {
 
     @Transient
     Integer fieldId;
+
+    public void move(Integer diceValue) {
+        if (didStart) {
+            progress += diceValue;
+        } else {
+            didStart = true;
+        }
+    }
+
+    public Pawn clone() {
+        return new Pawn(number, playerId, gameId, progress, didStart, fieldId);
+    }
+
+    public void reset() {
+        progress = 0;
+        didStart = false;
+    }
+
+    public GamePlayerId getGamePlayerId() {
+        return GamePlayerId.builder()
+                .gameId(getGameId())
+                .playerId(getPlayerId())
+                .build();
+    }
 }

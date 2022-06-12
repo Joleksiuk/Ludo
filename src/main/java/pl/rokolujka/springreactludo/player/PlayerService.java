@@ -3,11 +3,16 @@ package pl.rokolujka.springreactludo.player;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.rokolujka.springreactludo.integration.GravatarService;
+import pl.rokolujka.springreactludo.game.gamePlayer.GamePlayer;
+import pl.rokolujka.springreactludo.game.gamePlayer.GamePlayerRepository;
 import pl.rokolujka.springreactludo.playerFriend.PlayerFriend;
 import pl.rokolujka.springreactludo.playerFriend.PlayerFriendRepository;
 import pl.rokolujka.springreactludo.playerFriendInvite.PlayerFriendInvite;
 import pl.rokolujka.springreactludo.playerFriendInvite.PlayerFriendInviteRepository;
+import pl.rokolujka.springreactludo.playerGameInvite.PlayerGameInvite;
+import pl.rokolujka.springreactludo.playerGameInvite.PlayerGameInviteRepository;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +26,8 @@ public class PlayerService {
     private final PlayerFriendRepository playerFriendRepository;
     private final PlayerFriendInviteRepository playerFriendInviteRepository;
     private final GravatarService gravatarService;
+    private final PlayerGameInviteRepository playerGameInviteRepository;
+    private final GamePlayerRepository gamePlayerRepository;
 
     public List<Player> findAllPlayers() {
         List<Player> players = new LinkedList<>();
@@ -93,6 +100,28 @@ public class PlayerService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
+    }
+    public List<Player> findAllPlayersOfGameByGameId(Integer gameId){
+        List<GamePlayer> gamePlayers =gamePlayerRepository.findByGameId(gameId);
+        List<Player> playersOfGame =new ArrayList<>();
+
+        gamePlayers.forEach(x->{
+            Optional<Player> player =playerRepository.findById(x.getPlayerId());
+            player.ifPresent(playersOfGame::add);
+        });
+        return  playersOfGame;
+    }
+
+
+    public List<Player> findAllPlayersInvitedToGameByGameId(Integer gameId){
+        List<PlayerGameInvite> playerGameInvites =playerGameInviteRepository.findByGameId(gameId);
+        List<Player> invitedPlayers=new ArrayList<>();
+
+        playerGameInvites.forEach(x->{
+            Optional<Player> player =playerRepository.findById(x.getInvitedPlayerId());
+            player.ifPresent(invitedPlayers::add);
+        });
+        return invitedPlayers;
     }
 
     public Optional<Player> findPlayerByNickname(String nickname) {
