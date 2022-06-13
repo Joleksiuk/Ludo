@@ -96,7 +96,7 @@ export default function LudoAppBar(props: AppBarProps) {
                 <ListItemIcon>
                   <PersonIcon></PersonIcon>
                 </ListItemIcon>
-                <ListItemText>My Profile</ListItemText>
+                <ListItemText>My profile</ListItemText>
               </ListItemButton>
             </ListItem>
             <ListItem>

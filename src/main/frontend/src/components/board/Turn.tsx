@@ -2,8 +2,8 @@ import { Avatar, Grid, Paper, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useSubscription } from "react-stomp-hooks";
-import { Player } from "../data-interfaces";
-import ludoAxios from "../ludo-axios";
+import { Player } from "../../data-interfaces";
+import ludoAxios from "../../ludo-axios";
 
 interface TurnProps {
   gameId: number;

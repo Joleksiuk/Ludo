@@ -14,15 +14,15 @@ import NotFoundPage from "./components/pages/NotFoundPage";
 import ProfilePage from "./components/pages/ProfilePage";
 import { GameIdContext } from "./components/GameIdProvider";
 import { StompSessionProvider } from "react-stomp-hooks";
-import NotificationStack from "./components/NotificationStack";
+import NotificationStack from "./components/notifications/NotificationStack";
 import RedirectToLogin from "./components/RedirectToLogin";
+import GameInviteNotification from "./components/notifications/GameInviteNotification";
 
 function App() {
   const gameId = useRef<number>();
 
   return (
     <StompSessionProvider url={"http://localhost:8080/websocketApp"}>
-      <GameIdContext.Provider value={gameId}>
         <BrowserRouter>
           <LudoAppBar title="Ludo"></LudoAppBar>
           <Box sx={{ height: 100 }}></Box>
@@ -40,9 +40,8 @@ function App() {
               <Route path="/redirect" element={<RedirectToLogin />} />
             </Routes>
           </Container>
+          <NotificationStack></NotificationStack>
         </BrowserRouter>
-        <NotificationStack></NotificationStack>
-      </GameIdContext.Provider>
     </StompSessionProvider>
   );
 }

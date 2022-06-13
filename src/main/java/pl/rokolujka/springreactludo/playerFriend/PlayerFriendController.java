@@ -2,6 +2,7 @@ package pl.rokolujka.springreactludo.playerFriend;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.rokolujka.springreactludo.player.Player;
 
 import java.util.List;
 

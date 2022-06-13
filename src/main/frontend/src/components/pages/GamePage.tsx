@@ -1,10 +1,9 @@
 import { Box, Grid, Paper, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Board from "../board/Board";
-import RedirectToLogin from "../RedirectToLogin";
 import { Navigate, useParams } from "react-router-dom";
-import Dice from "../Dice";
-import Turn from "../Turn";
+import Dice from "../board/Dice";
+import Turn from "../board/Turn";
 import authService from "../../services/auth.service";
 import { Game, Player } from "../../data-interfaces";
 import ludoAxios from "../../ludo-axios";

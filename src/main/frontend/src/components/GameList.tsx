@@ -17,6 +17,8 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { Game } from "../data-interfaces";
 import { GameIdContext } from "./GameIdProvider";
+import FriendlistToInviteToGame from "./FriendlistToInviteToGame";
+import authService from "../services/auth.service";
 
 const modalStyle: React.CSSProperties = {
   position: "absolute" as "absolute",
@@ -28,16 +30,18 @@ const modalStyle: React.CSSProperties = {
   border: "none",
 };
 
-const DATE_FORMAT: string = "DD.MM.yyyy hh:mm";
+const DATE_FORMAT: string = "DD.MM.yyyy HH:mm";
 
-export default function VotingSessionList() {
+export default function GameList() {
   const API_URL: string = "games";
 
   const [games, setGames] = React.useState<
     Array<Game>
   >([]);
-  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [formModalOpen, setFormModalOpen] = React.useState<boolean>(false);
+  const [gameModalOpen, setGameModalOpen] = React.useState<boolean>(false);
   const [listUpdated, setListUpdated] = React.useState<boolean>(false);
+  const [selectedGame, setSelectedGame] = React.useState<Game>()
 
   const navigate = useNavigate();
 
@@ -50,16 +54,21 @@ export default function VotingSessionList() {
   }
 
   const handleOpenAddEditModal = (add: boolean) => {
-    setModalOpen(true);
+    setFormModalOpen(true);
   };
   const handleCloseAddEditModal = () => {
-    setModalOpen(false);
+    setFormModalOpen(false);
     setListUpdated(true);
   };
 
+  const handleGameModalOpen = (game: Game) => {
+    setSelectedGame(game)
+    setGameModalOpen(true)
+  }
+
   React.useEffect(() => {
     ludoAxios
-      .get(API_URL)
+      .get(API_URL + `/player/${authService.getCurrentPlayer().id}`)
       .then((response) => response.data)
       .then((data) => setGames(data))
       .then(() => setListUpdated(false));
@@ -70,12 +79,17 @@ export default function VotingSessionList() {
       <TableRow key={game.id}>
         <TableCell>{game.name}</TableCell>
         <TableCell>
-          {moment(game.startDate).format(DATE_FORMAT)}
+          {game.startDate !== null 
+            ?moment(game.startDate).format(DATE_FORMAT)
+            : '-'}
         </TableCell>
         <TableCell>
           <ButtonGroup>
-            <Button onClick={() => navigateToGame(game)}>Go to game</Button>
-            <Button onClick={() => navigateToLobby(game)}>Go to lobby</Button>
+            <Button onClick={() => handleGameModalOpen(game)}>Invite friends</Button>
+            {game.startDate !== null
+              ? <Button onClick={() => navigateToGame(game)}>Go to game</Button>
+              : <Button onClick={() => navigateToLobby(game)}>Go to lobby</Button>
+            }
           </ButtonGroup>
         </TableCell>
       </TableRow>
@@ -84,7 +98,7 @@ export default function VotingSessionList() {
 
   const FormModal = () => {
     return (
-      <Modal open={modalOpen} onClose={handleCloseAddEditModal}>
+      <Modal open={formModalOpen} onClose={handleCloseAddEditModal}>
         <Box style={modalStyle}>
           <AddGameForm
             onSave={handleCloseAddEditModal}
@@ -94,17 +108,27 @@ export default function VotingSessionList() {
     );
   };
 
+  const InviteModal = () => {
+    return (
+      <Modal open={gameModalOpen} onClose={() => setGameModalOpen(false)}>
+        <Box style={modalStyle}>
+          <FriendlistToInviteToGame gameId={gameModalOpen && selectedGame.id}></FriendlistToInviteToGame>
+        </Box>
+      </Modal>
+    )
+  }
+
   return (
     <Box>
       <Button variant="contained" style={{margin: '20px'}} onClick={() => handleOpenAddEditModal(true)}>
-        Add new
+        New game 
       </Button>
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
-              <TableCell>Creation date</TableCell>
+              <TableCell>Started at</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
@@ -112,6 +136,7 @@ export default function VotingSessionList() {
         </Table>
       </TableContainer>
       <FormModal></FormModal>
+      <InviteModal></InviteModal>
     </Box>
   );
 }

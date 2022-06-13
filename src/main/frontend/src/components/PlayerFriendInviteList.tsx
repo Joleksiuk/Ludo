@@ -11,60 +11,78 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import ludoAxios from "../ludo-axios";
-import { PlayerFriendInvite } from "../data-interfaces";
+import { Player, PlayerFriendInvite } from "../data-interfaces";
+import authService from "../services/auth.service";
 
-export default function PlayerFriendInviteList() {
-  const [playerFriendInvites, setplayerFriendInvites] = useState(
-    new Array<PlayerFriendInvite>()
+interface PlayerFriendInviteListProps {
+  onAccept: () => void
+}
+
+export default function PlayerFriendInviteList(props: PlayerFriendInviteListProps) {
+  const [invitingPlayers, setInvitingPlayers] = useState(
+    new Array<Player>()
   );
 
   useEffect(() => {
+    if(!authService.isPlayerLoggedIn()) {
+      return;
+    }
     ludoAxios
-      .get<PlayerFriendInvite[]>("player_friend_invites")
+      .get<Player[]>("player_friend_invites/" + authService.getCurrentPlayer().id)
       .then((response) => {
-        setplayerFriendInvites(response.data);
+        setInvitingPlayers(response.data);
       })
       .catch((error) => console.log(error));
   },[]);
   
 
-  const handleAccept=(event, playerFriendInvite)=>{
-    ludoAxios.put("player_friend_invites/accept",playerFriendInvite)
+  const handleAccept=(event, player)=>{
+    const playerFriendInvite = new PlayerFriendInvite(player.id, authService.getCurrentPlayer().id) 
+    ludoAxios.put("player_friend_invites/accept", playerFriendInvite
+    )
     .catch((error) => console.log(error));
-    refreshInviteList(playerFriendInvite);
-    
+    refreshInviteList(player);
+    props.onAccept() 
   }
 
-  const handleDecline=(event, playerFriendInvite)=>{
+  const handleDecline=(event, player)=>{
+    const playerFriendInvite = new PlayerFriendInvite(player.id, authService.getCurrentPlayer().id) 
     ludoAxios.put("player_friend_invites/decline",playerFriendInvite)
     .catch((error) => console.log(error));
-    refreshInviteList(playerFriendInvite);
+    refreshInviteList(player);
   }
 
-  const refreshInviteList=(playerFriendInvite:PlayerFriendInvite)=>{
-    playerFriendInvites.splice(
-      playerFriendInvites.indexOf(playerFriendInvite),
-      1
-    );
-    setplayerFriendInvites(playerFriendInvites);
+  const refreshInviteList=(player:Player)=>{
+    setInvitingPlayers(invitingPlayers => {
+      invitingPlayers.splice(
+        invitingPlayers.indexOf(player),
+        1);
+        return [...invitingPlayers]
+
+    });
   }
   
 
   return (
     <div>
       <List subheader={<ListSubheader>Friend invites</ListSubheader>}>
-        {playerFriendInvites.map((playerFriendInvite) => {
+        {invitingPlayers.map((player, index) => {
           return (
-            <ListItem>
+            <ListItem key={index}>
               <ListItemAvatar>
-                <Avatar></Avatar>
+                <Avatar src={player.picture}></Avatar>
               </ListItemAvatar>
-              <ListItemText>{playerFriendInvite.invitedUserId}</ListItemText>
-                <Button onClick={(event) => handleAccept(event,playerFriendInvite)} >Accept</Button>
-                <Button onClick={(event) => handleDecline(event,playerFriendInvite)} >Decline</Button>
+              <ListItemText>{player.nickname}</ListItemText>
+                <Button onClick={(event) => handleAccept(event,player)} >Accept</Button>
+                <Button onClick={(event) => handleDecline(event,player)} >Decline</Button>
             </ListItem>
           );
         })}
+      {invitingPlayers.length === 0 &&
+        <ListItem>
+            <ListItemText>No new invites</ListItemText>
+        </ListItem>
+      }
       </List>
     </div>
   );

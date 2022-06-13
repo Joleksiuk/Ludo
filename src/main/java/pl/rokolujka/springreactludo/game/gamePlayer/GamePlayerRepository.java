@@ -8,4 +8,5 @@ public interface GamePlayerRepository extends CrudRepository<GamePlayer, GamePla
 
     List<GamePlayer> findByGameId(Integer gameId);
     List<GamePlayer> findAllGamePLayersByGameId(Integer gameId);
+    List<GamePlayer> findByPlayerId(Integer playerId);
 }
