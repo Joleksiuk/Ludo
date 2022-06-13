@@ -9,6 +9,7 @@ import pl.rokolujka.springreactludo.game.gamePlayer.GamePlayerRepository;
 import pl.rokolujka.springreactludo.game.pawn.Pawn;
 import pl.rokolujka.springreactludo.game.pawn.PawnInfo;
 import pl.rokolujka.springreactludo.game.pawn.PawnRepository;
+import pl.rokolujka.springreactludo.lobby.LobbyModel;
 import pl.rokolujka.springreactludo.player.Player;
 import pl.rokolujka.springreactludo.player.PlayerService;
 
@@ -72,10 +73,19 @@ public class GameService {
         return gamePlayers;
     }
 
-    private Integer getStartingPlayerIdFromColorMap(Map<Integer, String> playerIdToColorMap, Integer gameId) {
-        ColorEnum color = BoardDefaultTurnOrderEnum.getByBoard(getGameBoardByGameId(gameId)).getColorTurnOrder().get(0);
-        return getPlayerIdFromColorMap(playerIdToColorMap, color.getColor());
+    public void startGame(Game game, List<LobbyModel> lobbyModels){
+        game.setTurnPlayerId(lobbyModels.stream().findFirst().get().getPlayerId());
+        gameRepository.save(game);
+
+        Map<Integer,String> playerIdToColorMap=new HashMap<>();
+        lobbyModels.forEach(player->{
+            playerIdToColorMap.put(player.getPlayerId(), player.getColor());
+        });
+        createLobbyGamePlayers(playerIdToColorMap,game.getId());
+        pawnRepository.saveAll(createGamePawns(game));
+
     }
+
 
     private Integer getPlayerIdFromColorMap(Map<Integer, String> playerIdToColor, String color) {
         return playerIdToColor.entrySet()
@@ -136,7 +146,7 @@ public class GameService {
                 .build();
     }
 
-    private BoardEnum getGameBoardByGameId(Integer gameId) {
+    public BoardEnum getGameBoardByGameId(Integer gameId) {
         return gameRepository.findById(gameId)
                 .map(Game::getBoardCode)
                 .map(BoardEnum::getByCode)
@@ -430,4 +440,5 @@ public class GameService {
     public Optional<Game> findById(Integer id) {
         return gameRepository.findById(id);
     }
+
 }
