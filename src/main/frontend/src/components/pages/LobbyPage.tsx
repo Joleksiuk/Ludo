@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, CardHeader, Grid, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, ListSubheader, CardContent, Box } from '@mui/material';
+import { Avatar, Button, Card, CardHeader, Grid, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, ListSubheader, CardContent, Box, SnackbarContent, Snackbar } from '@mui/material';
 import axios from '../../ludo-axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -23,6 +23,8 @@ export default function LobbyPage() {
   const [timerStart, setTimerStart] = useState<boolean>(false);
   const [game, setGame] = useState<Game>();
   const [colorList, setColorList] = useState<string[]>(["red", "green", "blue", "yellow"]);
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
+  const [snackbarMessage, setSnackbarMessage] = useState<string>('')
 
   const [lobbyModels,setLobbyModels]=useState<LobbyModel[]>([]);
 
@@ -63,7 +65,7 @@ export default function LobbyPage() {
   //rendering color pick buttons
   const renderColorList = (player:LobbyModel) => {
     return (
-    <Grid container spacing={0}>
+    <Grid container alignItems='center' justifyContent={'center'} spacing={0}>
       {colorList.map((color) =>
         <Grid item xs>
           {player.color === color
@@ -79,6 +81,15 @@ export default function LobbyPage() {
     </Grid>
     )
     }
+
+    const handleJoin = (player: Player) => {
+        const i = invitedPlayers.indexOf(player)
+        const players = [...invitedPlayers]
+        players.splice(i, 1)
+        setInvitedPlayers(players)
+    }
+
+    useSubscription(`/topic/game.join.${id}`, message => handleJoin(JSON.parse(message.body)))
 
 
   //loading data from API at site reload
@@ -102,8 +113,12 @@ export default function LobbyPage() {
       
       setIsLoading(false);
 
-  }, []);
+  }, [invitedPlayers]);
 
+  const showErrorInSnackbar = (err: string) => {
+    setSnackbarMessage(err)
+    setSnackbarOpen(true)
+  }
 
   const handleGameData = (game: Game) => {
     if (game.startDate === null || game.startDate === undefined) {
@@ -115,38 +130,33 @@ export default function LobbyPage() {
   const handleStartGame = (event) => {
 
     var startGame :boolean =true;
-    if(lobbyModels.length< colorList.length){
+    if(lobbyModels.length !== colorList.length){
       startGame=false;
-      console.log("Too few players!")
+      showErrorInSnackbar("Wrong number of players!")
     }
     lobbyModels.forEach(x=>{
       if(x.color==="blank" || x.color==="null"){
-        console.log("Not everyone chose their color!");
+        showErrorInSnackbar("Not everyone chose their color!")
         startGame=false;
       }
     })
 
-    var colorsCopy = colorList
-    lobbyModels.forEach(x=>{
-      lobbyModels.forEach(y=>{
-        if(x===y){
-          startGame=false;
-        }
-      })
-    })
+    const selectedColors = [...lobbyModels.map(model => model.color)]
+    const uniqueSelectedColors = [...selectedColors.filter((value, index, self) => self.indexOf(value) === index)]
+    if (selectedColors.length !== uniqueSelectedColors.length) {
+      startGame = false;
+      showErrorInSnackbar("Colors are not unique!")
+    }
 
-    if(startGame.valueOf()){
-
-      axios.put<Game>("games/"+id+"/start").catch((error)=>console.log(error));
+    if(startGame){
 
       setGameStarted(true);
       setTimerStart(true);
       setModalOpen(true);
   
       const msg = JSON.stringify(lobbyModels);
-      console.log(msg);
       if (stompClient && gameIdDefined()) {
-        stompClient.publish({ destination: "/app/lobby/${id}/game-start", body: msg});
+        stompClient.publish({ destination: `/app/lobby/${id}/game-start`, body: msg});
       }
     }  
   }
@@ -291,6 +301,13 @@ export default function LobbyPage() {
           </Typography>
         </Box>
       </Modal>
+      <Snackbar
+        open={snackbarOpen}
+        onClose={() => setSnackbarOpen(false)}
+        key={"bottomright"}
+      >
+        <SnackbarContent message={snackbarMessage}/>
+      </Snackbar>
 
     </div>
   );

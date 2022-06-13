@@ -1,5 +1,6 @@
 import { Button, Snackbar, SnackbarContent } from "@mui/material";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useStompClient } from "react-stomp-hooks";
 import { GameAndPlayer, PlayerGameInvite } from "../../data-interfaces";
 import ludoAxios from "../../ludo-axios";
@@ -15,6 +16,7 @@ export default function GameInviteNotification(
 ) {
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(true);
   const stompClient = useStompClient();
+  const navigate = useNavigate()
 
   const action = (
     <>
@@ -38,6 +40,7 @@ export default function GameInviteNotification(
       headers: authHeader(),
     });
     setSnackbarOpen(false);
+    navigate(`/lobby/${props.gameAndPlayer.game.id}`)
   };
 
   const handleDecline = () => {

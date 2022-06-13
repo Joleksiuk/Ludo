@@ -18,6 +18,7 @@ import moment from "moment";
 import { Game } from "../data-interfaces";
 import { GameIdContext } from "./GameIdProvider";
 import FriendlistToInviteToGame from "./FriendlistToInviteToGame";
+import authService from "../services/auth.service";
 
 const modalStyle: React.CSSProperties = {
   position: "absolute" as "absolute",
@@ -29,7 +30,7 @@ const modalStyle: React.CSSProperties = {
   border: "none",
 };
 
-const DATE_FORMAT: string = "DD.MM.yyyy hh:mm";
+const DATE_FORMAT: string = "DD.MM.yyyy HH:mm";
 
 export default function GameList() {
   const API_URL: string = "games";
@@ -67,7 +68,7 @@ export default function GameList() {
 
   React.useEffect(() => {
     ludoAxios
-      .get(API_URL)
+      .get(API_URL + `/player/${authService.getCurrentPlayer().id}`)
       .then((response) => response.data)
       .then((data) => setGames(data))
       .then(() => setListUpdated(false));
@@ -85,8 +86,10 @@ export default function GameList() {
         <TableCell>
           <ButtonGroup>
             <Button onClick={() => handleGameModalOpen(game)}>Invite friends</Button>
-            <Button onClick={() => navigateToGame(game)}>Go to game</Button>
-            <Button onClick={() => navigateToLobby(game)}>Go to lobby</Button>
+            {game.startDate !== null
+              ? <Button onClick={() => navigateToGame(game)}>Go to game</Button>
+              : <Button onClick={() => navigateToLobby(game)}>Go to lobby</Button>
+            }
           </ButtonGroup>
         </TableCell>
       </TableRow>
@@ -125,7 +128,7 @@ export default function GameList() {
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
-              <TableCell>Creation date</TableCell>
+              <TableCell>Started at</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>

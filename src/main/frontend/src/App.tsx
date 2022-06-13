@@ -40,8 +40,8 @@ function App() {
               <Route path="/redirect" element={<RedirectToLogin />} />
             </Routes>
           </Container>
+          <NotificationStack></NotificationStack>
         </BrowserRouter>
-        <NotificationStack></NotificationStack>
     </StompSessionProvider>
   );
 }

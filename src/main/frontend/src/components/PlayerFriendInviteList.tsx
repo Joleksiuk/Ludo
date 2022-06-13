@@ -14,7 +14,11 @@ import ludoAxios from "../ludo-axios";
 import { Player, PlayerFriendInvite } from "../data-interfaces";
 import authService from "../services/auth.service";
 
-export default function PlayerFriendInviteList() {
+interface PlayerFriendInviteListProps {
+  onAccept: () => void
+}
+
+export default function PlayerFriendInviteList(props: PlayerFriendInviteListProps) {
   const [invitingPlayers, setInvitingPlayers] = useState(
     new Array<Player>()
   );
@@ -38,7 +42,7 @@ export default function PlayerFriendInviteList() {
     )
     .catch((error) => console.log(error));
     refreshInviteList(player);
-    
+    props.onAccept() 
   }
 
   const handleDecline=(event, player)=>{
@@ -66,7 +70,7 @@ export default function PlayerFriendInviteList() {
           return (
             <ListItem key={index}>
               <ListItemAvatar>
-                <Avatar></Avatar>
+                <Avatar src={player.picture}></Avatar>
               </ListItemAvatar>
               <ListItemText>{player.nickname}</ListItemText>
                 <Button onClick={(event) => handleAccept(event,player)} >Accept</Button>
@@ -74,6 +78,11 @@ export default function PlayerFriendInviteList() {
             </ListItem>
           );
         })}
+      {invitingPlayers.length === 0 &&
+        <ListItem>
+            <ListItemText>No new invites</ListItemText>
+        </ListItem>
+      }
       </List>
     </div>
   );

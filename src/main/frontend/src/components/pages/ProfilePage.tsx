@@ -76,7 +76,7 @@ export default function ProfilePage() {
                         { change ? <Alert severity="info">Changes saved</Alert> : <></>}
                         <Box sx={{margin: '35px', minWidth:'300px'}}>
                             <Stack spacing={3}>
-                                <Typography justifyContent="center" variant='h3' component='h3'>My Profile</Typography>
+                                <Typography justifyContent="center" variant='h3' component='h3'>My profile</Typography>
                                 <Avatar
                                     sx={{ width: 300, height: 300}}
                                     src={picture}

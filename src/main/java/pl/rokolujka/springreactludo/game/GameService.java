@@ -13,6 +13,7 @@ import pl.rokolujka.springreactludo.lobby.LobbyModel;
 import pl.rokolujka.springreactludo.player.Player;
 import pl.rokolujka.springreactludo.player.PlayerService;
 
+import java.awt.*;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,30 +43,33 @@ public class GameService {
         return games;
     }
 
-    public void createGame(Game game) {
-        game.setTurnPlayerId(1000); // FIXME CTAI-20 Use getStartingPlayerIdFromColorMap
+    public void createGame(Game game, String nickname) {
+        Player player = playerService.findPlayerByNickname(nickname).orElseThrow();
+        game.setTurnPlayerId(player.getId());
         game.setCurrentDiceValue(1);
         game.setDiceThrownInTurn(false);
         gameRepository.save(game);
-        // FIXME CTAI-20 Create pawns after the game start when player_game are all already saved using createLobbyGamePlayers
-        List<GamePlayer> gamePlayers = List.of(
-                new GamePlayer(1000, game.getId(), ColorEnum.RED.getColor(), 1001),
-                new GamePlayer(1001, game.getId(), ColorEnum.GREEN.getColor(), 1000),
-                new GamePlayer(3, game.getId(), ColorEnum.BLUE.getColor(), 4),
-                new GamePlayer(4, game.getId(), ColorEnum.YELLOW.getColor(), 1000)
-        );
-        gamePlayerRepository.saveAll(BoardEnum.getByCode(game.getBoardCode()).equals(BoardEnum.SMALL)
-                ? gamePlayers.subList(0, 2)
-                : gamePlayers);
-        pawnRepository.saveAll(createGamePawns(game));
+        GamePlayer creatingGamePlayer = new GamePlayer(player.getId(), game.getId(), findFirstFreeColor(game.getId()).getColor(), null);
+        gamePlayerRepository.save(creatingGamePlayer);
+    }
+
+    public ColorEnum findFirstFreeColor(Integer gameId) {
+        List<String> occupiedColorCodes = gamePlayerRepository.findByGameId(gameId).stream()
+                .map(GamePlayer::getPlayerColour)
+                .collect(Collectors.toList());
+        return getGameDefaultOrderColors(gameId)
+                .stream()
+                .filter(color -> !occupiedColorCodes.contains(color.getColor()))
+                .findFirst()
+                .orElseThrow();
     }
 
     private List<GamePlayer> createLobbyGamePlayers(Map<Integer, String> playerIdToColorMap, Integer gameId) {
-        List<ColorEnum> colors = BoardDefaultTurnOrderEnum.getByBoard(getGameBoardByGameId(gameId)).getColorTurnOrder();
+        List<ColorEnum> colors = getGameDefaultOrderColors(gameId);
         List<GamePlayer> gamePlayers = new LinkedList<>();
         for (int i = 0; i < colors.size(); i++) {
             String currentColorValue = colors.get(i).getColor();
-            String nextColorValue = colors.get(i < colors.size() - 1 ? i : 0).getColor();
+            String nextColorValue = colors.get(i + 1 < colors.size() ? i + 1 : 0).getColor();
             Integer currentPlayer = getPlayerIdFromColorMap(playerIdToColorMap, currentColorValue);
             Integer nextPlayer = getPlayerIdFromColorMap(playerIdToColorMap, nextColorValue);
             gamePlayers.add(new GamePlayer(currentPlayer, gameId, currentColorValue, nextPlayer));
@@ -73,15 +77,19 @@ public class GameService {
         return gamePlayers;
     }
 
+    public List<ColorEnum> getGameDefaultOrderColors(Integer gameId) {
+        return BoardDefaultTurnOrderEnum.getByBoard(getGameBoardByGameId(gameId)).getColorTurnOrder();
+    }
+
     public void startGame(Game game, List<LobbyModel> lobbyModels){
-        game.setTurnPlayerId(lobbyModels.stream().findFirst().get().getPlayerId());
+        game.setTurnPlayerId(lobbyModels.stream().findFirst().orElseThrow().getPlayerId());
         gameRepository.save(game);
 
         Map<Integer,String> playerIdToColorMap=new HashMap<>();
         lobbyModels.forEach(player->{
             playerIdToColorMap.put(player.getPlayerId(), player.getColor());
         });
-        createLobbyGamePlayers(playerIdToColorMap,game.getId());
+        gamePlayerRepository.saveAll(createLobbyGamePlayers(playerIdToColorMap,game.getId()));
         pawnRepository.saveAll(createGamePawns(game));
 
     }
@@ -441,4 +449,13 @@ public class GameService {
         return gameRepository.findById(id);
     }
 
+    public List<Game> findByPlayerId(Integer playerId) {
+        return gamePlayerRepository.findByPlayerId(playerId)
+                .stream()
+                .map(GamePlayer::getGameId)
+                .map(this::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+    }
 }

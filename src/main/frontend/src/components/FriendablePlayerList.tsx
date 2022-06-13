@@ -71,7 +71,7 @@ export default function FriendablePlayersList() {
     <Box>
       <List
         subheader={
-          <ListSubheader>Players you could invite to friends:</ListSubheader>
+          <ListSubheader>Invite players to friends</ListSubheader>
         }
       >
         {suggestedPlayerFriendList}

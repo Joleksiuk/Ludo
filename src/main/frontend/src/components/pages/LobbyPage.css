@@ -31,11 +31,9 @@
 
 .picked{
     position: relative;
-    border-color: #505251;
-    background-color: #cedbd6;
+    justify-content: center;
+    border-color: hwb(214 0% 14%);
+    background-color: white;
     border-style: solid;
-    width: 4rem;
-    height: 4rem;
-    margin: auto;
-    border-radius:20%;
+    border-radius:3rem;
 }

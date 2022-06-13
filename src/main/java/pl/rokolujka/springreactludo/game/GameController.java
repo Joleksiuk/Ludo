@@ -24,7 +24,10 @@ public class GameController {
     }
 
     @PostMapping
-    public void createGame(@RequestBody Game game) {gameService.createGame(game);}
+    public void createGame(@RequestBody Game game, @RequestHeader(name = "Authorization") String headerAuth) {
+        String nick = jwtUtils.getPlayerNameFromAuthorizationHeader(headerAuth);
+        gameService.createGame(game, nick);
+    }
 
     @PutMapping
     public void updateGame(@RequestBody Game game) {
@@ -53,6 +56,11 @@ public class GameController {
             return List.of();
         }
         return gameService.getPossibleMoves(nickname, id);
+    }
+
+    @GetMapping("player/{playerId}")
+    public List<Game> getGamesByPlayerId(@PathVariable Integer playerId) {
+        return gameService.findByPlayerId(playerId);
     }
 
     @GetMapping(value="{id}")
