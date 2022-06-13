@@ -5,13 +5,17 @@ import org.springframework.messaging.handler.annotation.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import pl.rokolujka.springreactludo.authentication.JwtUtils;
+import pl.rokolujka.springreactludo.game.GameService;
 import pl.rokolujka.springreactludo.game.gamePlayer.GamePlayer;
 import pl.rokolujka.springreactludo.game.gamePlayer.GamePlayerService;
 import pl.rokolujka.springreactludo.player.PlayerService;
+import pl.rokolujka.springreactludo.lobby.LobbyModel;
 import pl.rokolujka.springreactludo.playerFriendInvite.PlayerFriendInvite;
 import pl.rokolujka.springreactludo.playerFriendInvite.PlayerFriendInviteService;
 import pl.rokolujka.springreactludo.playerGameInvite.PlayerGameInvite;
 import pl.rokolujka.springreactludo.playerGameInvite.PlayerGameInviteService;
+
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -24,6 +28,7 @@ public class WebSocketController {
     private final PlayerGameInviteService playerGameInviteService;
     private final PlayerService playerService;
     private final PlayerFriendInviteService playerFriendInviteService;
+    private final GameService gameService;
 
     @MessageMapping("/invite/friend")
     public void sendFriendInvite(@Payload PlayerFriendInvite invite) {
@@ -50,7 +55,12 @@ public class WebSocketController {
 
     @MessageMapping("/lobby/{gameId}/game-start")
     @SendTo("/topic/game-start.lobby.{gameId}")
-    public LobbyStatusMessage sendGameStartedMessage(@DestinationVariable Integer gameId) {
+    public LobbyStatusMessage sendGameStartedMessage(
+            @DestinationVariable Integer gameId,
+            List<LobbyModel> lobbyModelList) {
+
+        gameService.startGame(gameService.findGameById(gameId),lobbyModelList);
+        gameService.setStartGameTimestamp(gameId);
         return LobbyStatusMessage.builder()
                 .gameStarted(true)
                 .build();
