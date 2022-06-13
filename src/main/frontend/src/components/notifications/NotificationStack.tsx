@@ -17,7 +17,8 @@ export default function NotificationStack() {
   };
 
   const handleGameInvite = (gameInvite: GameAndPlayer) => {
-    setGameInvites(prev => [...prev, gameInvite])
+    console.log(gameInvite)
+    setGameInvites([...gameInvites,gameInvite])
   }
 
   useSubscription(
@@ -41,11 +42,9 @@ export default function NotificationStack() {
           playerFriendInvite={playerFriendInvite}
         ></FriendInviteNotification>
       ))}
-      {gameInvites.map((gameAndPlayer, index) => {
-        <GameInviteNotification
-        key={index}
-        gameAndPlayer={gameAndPlayer}/>
-      })}
+      {gameInvites.map((invite, inx) => (
+       <GameInviteNotification key={inx} gameAndPlayer={invite}/>
+      ))}
     </>
   );
 }

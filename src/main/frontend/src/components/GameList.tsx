@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { Game } from "../data-interfaces";
 import { GameIdContext } from "./GameIdProvider";
+import FriendlistToInviteToGame from "./FriendlistToInviteToGame";
 
 const modalStyle: React.CSSProperties = {
   position: "absolute" as "absolute",
@@ -30,14 +31,16 @@ const modalStyle: React.CSSProperties = {
 
 const DATE_FORMAT: string = "DD.MM.yyyy hh:mm";
 
-export default function VotingSessionList() {
+export default function GameList() {
   const API_URL: string = "games";
 
   const [games, setGames] = React.useState<
     Array<Game>
   >([]);
-  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [formModalOpen, setFormModalOpen] = React.useState<boolean>(false);
+  const [gameModalOpen, setGameModalOpen] = React.useState<boolean>(false);
   const [listUpdated, setListUpdated] = React.useState<boolean>(false);
+  const [selectedGame, setSelectedGame] = React.useState<Game>()
 
   const navigate = useNavigate();
 
@@ -50,12 +53,17 @@ export default function VotingSessionList() {
   }
 
   const handleOpenAddEditModal = (add: boolean) => {
-    setModalOpen(true);
+    setFormModalOpen(true);
   };
   const handleCloseAddEditModal = () => {
-    setModalOpen(false);
+    setFormModalOpen(false);
     setListUpdated(true);
   };
+
+  const handleGameModalOpen = (game: Game) => {
+    setSelectedGame(game)
+    setGameModalOpen(true)
+  }
 
   React.useEffect(() => {
     ludoAxios
@@ -70,10 +78,13 @@ export default function VotingSessionList() {
       <TableRow key={game.id}>
         <TableCell>{game.name}</TableCell>
         <TableCell>
-          {moment(game.startDate).format(DATE_FORMAT)}
+          {game.startDate !== null 
+            ?moment(game.startDate).format(DATE_FORMAT)
+            : '-'}
         </TableCell>
         <TableCell>
           <ButtonGroup>
+            <Button onClick={() => handleGameModalOpen(game)}>Invite friends</Button>
             <Button onClick={() => navigateToGame(game)}>Go to game</Button>
             <Button onClick={() => navigateToLobby(game)}>Go to lobby</Button>
           </ButtonGroup>
@@ -84,7 +95,7 @@ export default function VotingSessionList() {
 
   const FormModal = () => {
     return (
-      <Modal open={modalOpen} onClose={handleCloseAddEditModal}>
+      <Modal open={formModalOpen} onClose={handleCloseAddEditModal}>
         <Box style={modalStyle}>
           <AddGameForm
             onSave={handleCloseAddEditModal}
@@ -93,6 +104,16 @@ export default function VotingSessionList() {
       </Modal>
     );
   };
+
+  const InviteModal = () => {
+    return (
+      <Modal open={gameModalOpen} onClose={() => setGameModalOpen(false)}>
+        <Box style={modalStyle}>
+          <FriendlistToInviteToGame gameId={gameModalOpen && selectedGame.id}></FriendlistToInviteToGame>
+        </Box>
+      </Modal>
+    )
+  }
 
   return (
     <Box>
@@ -112,6 +133,7 @@ export default function VotingSessionList() {
         </Table>
       </TableContainer>
       <FormModal></FormModal>
+      <InviteModal></InviteModal>
     </Box>
   );
 }

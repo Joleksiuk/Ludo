@@ -49,20 +49,22 @@ export default function PlayerFriendInviteList() {
   }
 
   const refreshInviteList=(player:Player)=>{
-    invitingPlayers.splice(
-      invitingPlayers.indexOf(player),
-      1
-    );
-    setInvitingPlayers(invitingPlayers);
+    setInvitingPlayers(invitingPlayers => {
+      invitingPlayers.splice(
+        invitingPlayers.indexOf(player),
+        1);
+        return [...invitingPlayers]
+
+    });
   }
   
 
   return (
     <div>
       <List subheader={<ListSubheader>Friend invites</ListSubheader>}>
-        {invitingPlayers.map((player) => {
+        {invitingPlayers.map((player, index) => {
           return (
-            <ListItem>
+            <ListItem key={index}>
               <ListItemAvatar>
                 <Avatar></Avatar>
               </ListItemAvatar>

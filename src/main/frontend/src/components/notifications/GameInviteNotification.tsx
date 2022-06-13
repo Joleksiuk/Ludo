@@ -59,7 +59,7 @@ export default function GameInviteNotification(
       key={"bottomright"}
     >
       <SnackbarContent
-        message={
+        message={//'Game invite received'
           props.gameAndPlayer.player.nickname +
           " invited you to the " +
           props.gameAndPlayer.game.name +

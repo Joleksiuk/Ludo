@@ -38,20 +38,24 @@ export default function PlayerGameInviteList() {
       body: JSON.stringify(gameAndPlayerToInvite(gameAndPlayer)),
       headers: authHeader(),
     });
+    deleteInvite(gameAndPlayer)
   };
 
   const handleDecline = (gameAndPlayer: GameAndPlayer) => {
     ludoAxios.put(
       "player-game-invites/decline",
       gameAndPlayerToInvite(gameAndPlayer)
-    ).then(() => {
+    ).then(() => deleteInvite(gameAndPlayer)
+    );
+  };
+
+  const deleteInvite = (gameAndPlayer: GameAndPlayer) => {
       setPlayerGameInvites(invites => {
         const i = invites.indexOf(gameAndPlayer);
         invites.splice(i, 1);
         return [...invites]
       })
-    });
-  };
+  }
 
   const gameAndPlayerToInvite = (
     gameAndPlayer: GameAndPlayer

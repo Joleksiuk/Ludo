@@ -16,13 +16,13 @@ import { GameIdContext } from "./components/GameIdProvider";
 import { StompSessionProvider } from "react-stomp-hooks";
 import NotificationStack from "./components/notifications/NotificationStack";
 import RedirectToLogin from "./components/RedirectToLogin";
+import GameInviteNotification from "./components/notifications/GameInviteNotification";
 
 function App() {
   const gameId = useRef<number>();
 
   return (
     <StompSessionProvider url={"http://localhost:8080/websocketApp"}>
-      <GameIdContext.Provider value={gameId}>
         <BrowserRouter>
           <LudoAppBar title="Ludo"></LudoAppBar>
           <Box sx={{ height: 100 }}></Box>
@@ -42,7 +42,6 @@ function App() {
           </Container>
         </BrowserRouter>
         <NotificationStack></NotificationStack>
-      </GameIdContext.Provider>
     </StompSessionProvider>
   );
 }

@@ -34,6 +34,7 @@ public class WebSocketController {
 
     @MessageMapping("/invite/game")
     public void sendGameInvite(@Payload PlayerGameInvite invite) {
+        playerGameInviteService.createPlayerGameInvite(invite);
         simpMessagingTemplate.convertAndSend(
                 String.format("/topic/invite.game.%d", invite.getInvitedPlayerId()),
                 playerGameInviteService.inviteToGameAndPlayer(invite));

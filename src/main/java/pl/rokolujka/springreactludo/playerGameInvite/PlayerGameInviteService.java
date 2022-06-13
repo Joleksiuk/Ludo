@@ -24,7 +24,7 @@ public class PlayerGameInviteService {
     }
 
     public List<GameAndPlayer> findPlayerGameInvitesByInvitedPlayerId(Integer invitedId) {
-        return playerGameInviteRepository.findByInvitingPlayerId(invitedId)
+        return playerGameInviteRepository.findByInvitedPlayerId(invitedId)
                 .stream()
                 .map(this::inviteToGameAndPlayer)
                 .collect(Collectors.toList());

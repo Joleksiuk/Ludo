@@ -14,6 +14,7 @@ interface HomePageCardProps {
     title: string,
   children?: JSX.Element;
   buttonText: string;
+  href: string
 }
 
 export default function HomePageCard(props: HomePageCardProps) {
@@ -25,7 +26,7 @@ export default function HomePageCard(props: HomePageCardProps) {
             {props.children}
         </CardContent>
         <CardActions>
-          <Button>
+          <Button href={props.href}>
             {props.buttonText}
           </Button>
         </CardActions>
