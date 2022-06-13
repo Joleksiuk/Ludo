@@ -2,6 +2,7 @@ package pl.rokolujka.springreactludo.game.gamePlayer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.rokolujka.springreactludo.playerGameInvite.PlayerGameInvite;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,4 +37,8 @@ public class GamePlayerService {
         return gamePlayerRepository.findAllGamePLayersByGameId(gameId);
     }
 
+    public void createFromGameInvite(PlayerGameInvite invite) {
+        GamePlayer gamePlayer = new GamePlayer(invite.getInvitedPlayerId(), invite.getGameId(), null, null);
+        gamePlayerRepository.save(gamePlayer);
+    }
 }

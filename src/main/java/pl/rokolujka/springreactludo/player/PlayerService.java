@@ -86,8 +86,8 @@ public class PlayerService {
     }
 
     public List<Player> findAllFriendInvitedPlayersOfPlayer(Integer id) {
-        List<PlayerFriendInvite> firstIdInvites = playerFriendInviteRepository.findAllByInvitingPlayerId(id);
-        List<PlayerFriendInvite> secondIdInvites = playerFriendInviteRepository.findAllByInvitedPlayerId(id);
+        List<PlayerFriendInvite> firstIdInvites = playerFriendInviteRepository.findByInvitingPlayerId(id);
+        List<PlayerFriendInvite> secondIdInvites = playerFriendInviteRepository.findByInvitedPlayerId(id);
 
         List<Integer> firstPlaceIds = firstIdInvites.stream().map(PlayerFriendInvite::getInvitedPlayerId).collect(Collectors.toList());
         List<Integer> secondPlaceIds = secondIdInvites.stream().map(PlayerFriendInvite::getInvitingPlayerId).collect(Collectors.toList());

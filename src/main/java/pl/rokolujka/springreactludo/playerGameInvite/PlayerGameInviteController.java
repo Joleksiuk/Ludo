@@ -2,12 +2,11 @@ package pl.rokolujka.springreactludo.playerGameInvite;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.rokolujka.springreactludo.playerFriendInvite.PlayerFriendInvite;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("player_game_invites")
+@RequestMapping("player-game-invites")
 public class PlayerGameInviteController {
 
     private final PlayerGameInviteService playerGameInviteService;
@@ -17,9 +16,9 @@ public class PlayerGameInviteController {
         this.playerGameInviteService = playerGameInviteService;
     }
 
-    @GetMapping
-    public List<PlayerGameInvite> getAllPlayerGameInvites() {
-        return playerGameInviteService.findAllPlayerGameInvites();
+    @GetMapping("{invitedPlayerId}")
+    public List<GameAndPlayer> getPlayersGameInvites(@PathVariable Integer invitedPlayerId) {
+        return playerGameInviteService.findPlayerGameInvitesByInvitedPlayerId(invitedPlayerId);
     }
 
     @PostMapping
@@ -27,9 +26,8 @@ public class PlayerGameInviteController {
         playerGameInviteService.createPlayerGameInvite(playerGameInvite);
     }
 
-    @DeleteMapping
-    public void deletePlayerFriend(@RequestBody PlayerGameInvite playerGameInvite) {
+    @PutMapping("decline")
+    public void declinePlayerGameInvite(@RequestBody PlayerGameInvite playerGameInvite) {
         playerGameInviteService.deletePlayerGameInvite(playerGameInvite);
     }
-
 }

@@ -34,18 +34,24 @@ export interface PlayerFriend{
     secondUserId: number,
 }
 
-export interface  PlayerGameInvite{
-    invitingUserId: number,
-    invitedUserId: number,
-    gameId: number,
+export class PlayerGameInvite {
+    invitingPlayerId: number;
+    invitedPlayerId: number;
+    gameId: number;
+
+    constructor(invitingUserId:number, invitedUserId: number, gameId: number) {
+        this.gameId = gameId;
+        this.invitedPlayerId = invitedUserId;
+        this.invitingPlayerId = invitingUserId;
+    }
 }
 
 export class PlayerFriendInvite{
-    invitingUserId:number;
-    invitedUserId: number;
-    PlayerFriendInvite(invitingUserId:number, invitedUserId: number){
-        this.invitedUserId=invitedUserId;
-        this.invitingUserId=invitingUserId;
+    invitingPlayerId:number;
+    invitedPlayerId: number;
+    constructor(invitingUserId:number, invitedUserId: number){
+        this.invitedPlayerId=invitedUserId;
+        this.invitingPlayerId=invitingUserId;
     }
 }
 
@@ -93,4 +99,9 @@ export interface LobbyStatusMessage{
 export interface Lobby{
     players: Player[],
     mapColorToPlayer: Map<string,string>,
+}
+
+export interface GameAndPlayer{
+    game: Game,
+    player: Player
 }

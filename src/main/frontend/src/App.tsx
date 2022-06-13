@@ -14,7 +14,7 @@ import NotFoundPage from "./components/pages/NotFoundPage";
 import ProfilePage from "./components/pages/ProfilePage";
 import { GameIdContext } from "./components/GameIdProvider";
 import { StompSessionProvider } from "react-stomp-hooks";
-import NotificationStack from "./components/NotificationStack";
+import NotificationStack from "./components/notifications/NotificationStack";
 import RedirectToLogin from "./components/RedirectToLogin";
 
 function App() {

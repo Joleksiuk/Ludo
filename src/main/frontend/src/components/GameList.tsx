@@ -97,7 +97,7 @@ export default function VotingSessionList() {
   return (
     <Box>
       <Button variant="contained" style={{margin: '20px'}} onClick={() => handleOpenAddEditModal(true)}>
-        Add new
+        New game 
       </Button>
       <TableContainer>
         <Table>

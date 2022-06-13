@@ -1,8 +1,8 @@
 import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { useStompClient, useSubscription } from "react-stomp-hooks";
-import ludoAxios from "../ludo-axios";
-import authHeader from "../services/auth.header";
+import ludoAxios from "../../ludo-axios";
+import authHeader from "../../services/auth.header";
 
 interface DiceProps {
   gameId: number;

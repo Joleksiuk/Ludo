@@ -2,6 +2,7 @@ package pl.rokolujka.springreactludo.playerFriendInvite;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.rokolujka.springreactludo.player.Player;
 
 import java.util.List;
 
@@ -16,9 +17,9 @@ public class PlayerFriendInviteController {
         this.playerFriendInviteService = playerFriendInviteService;
     }
 
-    @GetMapping
-    public List<PlayerFriendInvite> getAllPlayerFriendInvites() {
-        return playerFriendInviteService.findAllPlayerFriendInvites();
+    @GetMapping("{invitedPlayerId}")
+    public List<Player> getPlayerFriendInvites(@PathVariable Integer invitedPlayerId) {
+        return playerFriendInviteService.findPlayersInvitingPlayer(invitedPlayerId);
     }
 
     @PostMapping
