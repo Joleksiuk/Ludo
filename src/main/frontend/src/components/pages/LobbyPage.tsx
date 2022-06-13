@@ -2,7 +2,7 @@ import { Avatar, Button, Card, CardHeader, Grid, List, ListItem, ListItemAvatar,
 import axios from '../../ludo-axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Game, GamePlayer, Lobby, LobbyStatusMessage, Player } from '../../data-interfaces';
+import { Game, GamePlayer, Lobby, LobbyModel, LobbyStatusMessage, Player } from '../../data-interfaces';
 import SendIcon from '@mui/icons-material/Send'
 import { useStompClient, useSubscription } from 'react-stomp-hooks';
 import authService from '../../services/auth.service';
@@ -21,11 +21,10 @@ export default function LobbyPage() {
   const [gameStarted, setGameStarted] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [timerStart, setTimerStart] = useState<boolean>(false);
+  const [game, setGame] = useState<Game>();
   const [colorList, setColorList] = useState<string[]>(["red", "green", "blue", "yellow"]);
-  const [lobby, setLobby]=useState<Lobby>();
 
-  const [lobbyPlayerList, setLobbyPlayerList] = useState<Player[]>([]);
-  const [lobbyMap, setLobbyMap]=useState<Map<string,string>>();
+  const [lobbyModels,setLobbyModels]=useState<LobbyModel[]>([]);
 
   const gameIdDefined = () => id !== null;
 
@@ -34,7 +33,7 @@ export default function LobbyPage() {
 
   const handleColorPickWebSocketMessage=(message:LobbyStatusMessage)=>{
 
-    updateLobbyPlayerColor(message.color,message.playerId);
+    updateLobbyPlayerColor(message.playerColour,message.playerId);
   }
 
   const handleStartGameWebSocketMessage=(message:LobbyStatusMessage)=>{
@@ -48,27 +47,32 @@ export default function LobbyPage() {
   //updating lobby players list when a player changes color
   const updateLobbyPlayerColor=(color:string, playerId:number)=>{
 
-    setLobbyMap(new Map(lobbyMap.set(playerId.toString(),color)));
+
+    setLobbyModels((previousModels)=>{
+      const lobbyModel= previousModels.filter(x=>x.playerId ==playerId)[0];
+      const index =  previousModels.indexOf(lobbyModel);
+      lobbyModel.color =color;
+      const newArray = previousModels;
+      newArray[index] = lobbyModel;
+      return [... newArray];
+    });
 
   }
 
-  const getMapColorToPlayer=():Map<string,string>=>{
-    return  new Map(Object.entries(lobby.mapColorToPlayer));
-  }
 
   //rendering color pick buttons
-  const renderColorList = (player: Player) => {
+  const renderColorList = (player:LobbyModel) => {
     return (
     <Grid container spacing={0}>
       {colorList.map((color) =>
         <Grid item xs>
-          {lobbyMap?.get(player.id.toString()) === color
+          {player.color === color
             ?
             <div className='picked'>
-              <Button onClick={(event) => authService.isPlayerLoggedIn()&& handleColorPick(color, player)}><div className={'circle ' + color}></div></Button>
+              <Button onClick={(event) => authService.isPlayerLoggedIn()&& handleColorPick(color, player.playerId)}><div className={'circle ' + color}></div></Button>
             </div>
             :<div>
-              <Button onClick={(event) => authService.isPlayerLoggedIn()&& handleColorPick(color, player)}><div className={'circle ' + color}></div></Button>
+              <Button onClick={(event) => authService.isPlayerLoggedIn()&& handleColorPick(color, player.playerId)}><div className={'circle ' + color}></div></Button>
             </div>
           }
         </Grid>)}
@@ -87,14 +91,15 @@ export default function LobbyPage() {
       .then((response) => { handleGameData(response.data) })
       .catch((error) => console.log(error));
 
-      axios.get<Lobby>("lobby/"+id)
-      .then((response)=>{ 
-        setLobby(response.data); console.log(response.data);
-        const map = new Map<string,string>(Object.entries(response.data.mapColorToPlayer));
-        setLobbyMap(map);
-        setLobbyPlayerList(response.data.players);
-      })
+
+      axios.get<LobbyModel[]>("lobby/models/"+id)
+      .then((response)=>setLobbyModels(response.data))
       .catch((error)=>console.log(error));
+
+      axios.get<string[]>("lobby/colors/"+id)
+      .then((response)=>setColorList(response.data))
+      .catch((error)=>console.log(error));
+      
       setIsLoading(false);
 
   }, []);
@@ -103,30 +108,57 @@ export default function LobbyPage() {
   const handleGameData = (game: Game) => {
     if (game.startDate === null || game.startDate === undefined) {
       setGameStarted(false);
+      setGame(game);
     }
   }
 
   const handleStartGame = (event) => {
-    axios.put<number>("games/" + id + "/start").catch((error) => console.log(error));
 
-    setGameStarted(true);
-    setTimerStart(true);
-    setModalOpen(true);
-
-    if (stompClient && gameIdDefined()) {
-      stompClient.publish({ destination: `/app/lobby/${id}/game-start` });
+    var startGame :boolean =true;
+    if(lobbyModels.length< colorList.length){
+      startGame=false;
+      console.log("Too few players!")
     }
+    lobbyModels.forEach(x=>{
+      if(x.color==="blank" || x.color==="null"){
+        console.log("Not everyone chose their color!");
+        startGame=false;
+      }
+    })
+
+    var colorsCopy = colorList
+    lobbyModels.forEach(x=>{
+      lobbyModels.forEach(y=>{
+        if(x===y){
+          startGame=false;
+        }
+      })
+    })
+
+    if(startGame.valueOf()){
+
+      axios.put<Game>("games/"+id+"/start").catch((error)=>console.log(error));
+
+      setGameStarted(true);
+      setTimerStart(true);
+      setModalOpen(true);
+  
+      const msg = JSON.stringify(lobbyModels);
+      console.log(msg);
+      if (stompClient && gameIdDefined()) {
+        stompClient.publish({ destination: "/app/lobby/${id}/game-start", body: msg});
+      }
+    }  
   }
 
 
-  const handleColorPick = (color: string, player: Player) => {
+  const handleColorPick = (color: string, playerId: number) => {
 
-    if(player.id==authService.getCurrentPlayer().id){
 
-      updateLobbyPlayerColor(color,player.id);
+    if(playerId==authService.getCurrentPlayer().id){
 
       const msg = JSON.stringify({
-        playerId: player.id,
+        playerId: playerId,
         gameId: id,
         playerColour: color,
       });
@@ -167,7 +199,7 @@ export default function LobbyPage() {
 
   return (
     <div>
-      <h3>This is the lobby of game : {id}</h3>
+      <h3>This is the lobby of game : {game?.name}</h3>
 
       {gameStarted && !isLoading
         ? <Button variant="contained" endIcon={<SendIcon />} size="large" onClick={(event) => handleGoToGame(event)}>Go to game</Button>
@@ -182,8 +214,8 @@ export default function LobbyPage() {
             <CardHeader title="Game Players"></CardHeader>
             <CardContent>
               <List>               
-                {lobby?.players.map((player)=>(
-                  <ListItem key={player.id+"1"}>
+                {lobbyModels?.map((player)=>(
+                  <ListItem key={player.playerId+"1"}>
                   <Grid container spacing={3}>
 
                     <ListItemButton>

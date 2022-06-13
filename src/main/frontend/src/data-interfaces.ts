@@ -86,11 +86,25 @@ export interface BoardMove {
 export interface LobbyStatusMessage{
 
     playerId:number,
-    color: string,
+    playerColour: string,
     gameStarted:boolean,
 }
 
 export interface Lobby{
     players: Player[],
     mapColorToPlayer: Map<string,string>,
+}
+
+export class LobbyModel{
+    playerId:number;
+    color:string;
+    nickname:string;
+    picture:string;
+
+    constructor( playerId:number,color:string,nickname:string,picture:string){
+        this.playerId=playerId;
+        this.color=color;
+        this.nickname=nickname;
+        this.picture=picture;
+    }
 }

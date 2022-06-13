@@ -36,4 +36,14 @@ public class LobbyController {
     public Lobby findLobbyByGameId(@PathVariable Integer gameId){
         return lobbyService.findLobbyByGameId(gameId);
     }
+
+    @GetMapping("models/{gameId}")
+    public List<LobbyModel> findAllLobbyParticipantsByGameId(@PathVariable Integer gameId){
+        return lobbyService.getLobbyParticipantsByGameId(gameId);
+    }
+
+    @GetMapping("colors/{gameId}")
+    public List<String> findAllAvailableBoardColors(@PathVariable Integer gameId){
+        return lobbyService.getAvailableBoardColorsByGameId(gameId);
+    }
 }
